@@ -1,0 +1,13 @@
+package net.school.curriculum.notes;
+
+public enum NoteType {
+	
+	MATH_NOTES,
+	ENGLISH_NOTES,
+	AFRIKAANS_NOTES,
+	LIFE_SCIENCES_NOTES,
+	GEOGRAPHY_NOTES,
+	BUSSINESS_STUDIES_NOTES,
+	PHYSICAL_EDUCATIONS_NOTES
+	
+}
