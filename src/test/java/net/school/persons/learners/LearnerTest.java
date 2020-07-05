@@ -84,5 +84,22 @@ class LearnerTest {
 		
 		assertEquals("Thaabit Jacobs attending lesson", learn.attendLesson(less));
 	}
+	
+	@Test
+	void shouldIncrementTokensBy3WhenAttendingLesson() {
+		ArrayList<Subject> subjects = new ArrayList<>();
+		subjects.add(Subject.ENGLISH);
+		subjects.add(Subject.AFRIKAANS);
+		subjects.add(Subject.LIFE_SCIENCES);
+		
+		Learner learn = new Learner("thaabit", "jacobs", " ", subjects);
+		
+		Teacher teach = new Teacher("Thaabit", "Jacobs", " ", subjects);
+		Lesson less = new Lesson(teach, LocalTime.now(), Subject.ENGLISH);
+		
+		learn.attendLesson(less);
+		
+		assertEquals(3, learn.getTokens());
+	}
 
 }

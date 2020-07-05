@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import net.school.curriculum.subjects.Subject;
+import net.school.persons.learners.Learner;
 import net.school.persons.teachers.Teacher;
 
 class LessonTest {
@@ -51,5 +52,21 @@ class LessonTest {
 		
 		assertEquals(Subject.ENGLISH, less.getSubject());
 	}
-
+	
+	@Test
+	void shouldAddLearnerToLesson() {
+		ArrayList<Subject> subjects = new ArrayList<>();
+		subjects.add(Subject.ENGLISH);
+		subjects.add(Subject.AFRIKAANS);
+		subjects.add(Subject.GEOGRAPHY);
+		
+		Teacher teach = new Teacher("Thaabit", "Jacobs", " ", subjects);
+		LocalTime time = LocalTime.of(16, 24, 12);
+		Lesson less = new Lesson(teach, LocalTime.now(), Subject.ENGLISH);
+		Learner learn = new Learner("thaabit", "jacobs", " ", subjects);
+		
+		less.addLearnerLesson(learn);
+		
+		assertEquals("Thaabit Jacobs", less.getLearnersAttending().get(0).getFullName());
+	}
 }
