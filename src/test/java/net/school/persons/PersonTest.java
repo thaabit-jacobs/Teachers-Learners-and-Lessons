@@ -5,35 +5,41 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class PersonTest {
-
+	
+	private Person p = new Person("thaabit", "JACOBS", "thaabitjacobs@gmail.com");
+	
 	@Test
 	void shouldReturnTheFirstNameInCorrectCase() {
-		Person p = new Person("thaabit", "JACOBS", "thaabitjacobs@gmail.com");
 		assertEquals("Thaabit", p.getFirstName());
 	}
 
 	@Test
 	void shouldReturnTheLastNameInCorrectCase() {
-		Person p = new Person("thaabit", "JACOBS", "thaabitjacobs@gmail.com");
 		assertEquals("Jacobs", p.getLastName());
-	}
-
-	@Test
-	void shouldReturnTheUserFullNameInCorrectCase() {
-		Person p = new Person("thaabit", "JACOBS", "thaabitjacobs@gmail.com");
-		assertEquals("Thaabit Jacobs", p.getFullName());
 	}
 	
 	@Test
 	void shouldSetEmailToDefaultForInvalidEmailEntered() {
-		Person p = new Person("thaabit", "JACOBS", "thaabitjacobsgmail.com");
-		assertEquals("ThaabitJacobs@school.net", p.getEmailAddress());
+		 Person p2 = new Person("thaabit", "JACOBS", "thaabitjacobsgmail.com");
+		assertEquals("ThaabitJacobs@school.net", p2.getEmailAddress());
 	}
 	
 	@Test
 	void shouldReturnEmailEntered() {
-		Person p = new Person("thaabit", "JACOBS", "thaabitjacobs@gmail.com");
 		assertEquals("thaabitjacobs@gmail.com", p.getEmailAddress());
 	}
-
+	
+	
+	@Test
+	void shouldAddTokens() {
+		p.addTokens(10);
+		assertEquals(10, p.getTokens());
+	}
+	
+	@Test
+	void shouldFromTokens() {
+		p.addTokens(10);
+		p.deductTokens(5);
+		assertEquals(5, p.getTokens());
+	}
 }

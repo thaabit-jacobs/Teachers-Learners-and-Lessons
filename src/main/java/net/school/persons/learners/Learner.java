@@ -19,84 +19,39 @@ public class Learner extends Person {
 	
 	private ArrayList<Subject> registeredSubjects;
 	
-	private int tokens;
-	
-	private boolean attendingLesson;
-	
 	private EnumMap<Subject, AquiredType> notes;
 	
-	public Learner(String firstName, String lastName, String email, ArrayList<Subject> registeredSubjects) {
+	public Learner(String firstName, String lastName, String email) {
 		
 		super(firstName, lastName, email);
 		
-		this.registeredSubjects = registeredSubjects;
+		registeredSubjects = new ArrayList<>();
 		
 		notes = new EnumMap<Subject, AquiredType>(Subject.class);
 	}
 	
-	public boolean getAttendingLesson() {
-		return attendingLesson;
+	public boolean addSubject(Subject sub) {
+		return registeredSubjects.add(sub);
 	}
 	
-	public void setAttendingLesson(boolean attending) {
-		attendingLesson = attending;
-	}
-	
-	public int getTokens() {
-		return tokens;
-	}
-	
-	public String attendLesson(Lesson lesson) {
-		if(attendingLesson)
-			return this.getFullName() + " already attending a lesson";
-			
-		if(registeredSubjects.size() < 3) 
-			return this.getFullName() + " must be registered for 3 or more subjects to attend lesson";
-		
-		for(Subject sub: registeredSubjects)
-			if(lesson.getSubject() == sub) {
-				setAttendingLesson(true);
-				lesson.addLearnerLesson(this);
-				
-				notes.put(sub, AquiredType.ATTENDED_LESSON);
-				
-				tokens += 3; 
-				return this.getFullName() + " attending lesson";
-			}
-		
-		return this.getFullName() + " not registered for lesson";
-	}
-	
+	/*
 	public EnumMap<Subject, AquiredType> getNotes(){
 		return notes;
+	}*/
+	
+	public boolean canAttendLesson() {
+		if(registeredSubjects.size() >= 3)
+			return true;
+		
+		return false;
 	}
 	
-	public String askNotes(Learner learner, Subject subject) {
-		Set<Map.Entry<Subject, AquiredType>> set = learner.getNotes().entrySet();
+	public boolean registeredForSubject(Subject subject) {
+		for(Subject sub: registeredSubjects)
+			if(sub == subject)
+				return true;
 		
-		for(Map.Entry<Subject, AquiredType> mapEntry: set) 
-			if(mapEntry.getKey() == subject) 
-				for(Subject registeredsub: registeredSubjects)
-					if(registeredsub == subject) {
-						if(tokens < 2)
-							return "Not Enough tokens";
-						else {
-							tokens -= 2;
-							notes.put(subject, AquiredType.BOUGHT);
-							return "Bought notes for " + subject.toString() + " cost 2 tokens";
-						}
-						
-					} else {
-						if(tokens < 5)
-							return "Not Enough tokens";
-						else {
-							tokens -= 5;
-							notes.put(subject, AquiredType.BOUGHT);
-							return "Bought notes for " + subject.toString() + " cost 5 tokens";
-					}
-				}
-		
-		return learner.getFullName() + " has no notes on " + subject.toString();
+		return false;
 	}
 	
 	public String status() {
@@ -106,7 +61,7 @@ public class Learner extends Person {
 		for(Map.Entry<Subject, AquiredType> me: set)
 			status += me.getKey() + " : " + me.getValue() + "\n"; 
 		
-		status += "Tokens : " + tokens;
+		status += "Tokens : " + getTokens();
 		
 		return status;
 	}
