@@ -16,6 +16,10 @@ import net.school.persons.teachers.Teacher;
 class LearnerTest {
 
 	private Learner learner = new Learner("Thaabit", "Jacobs", "");
+
+	Teacher teacher = new Teacher("Thaabit", "Jacobs", "");
+	
+	Lesson lesson = new Lesson(teacher, LocalTime.of(11, 30), Subject.MATH);
 	
 	@Test
 	void shouldTrueWhenSubJectAdded() {
@@ -27,7 +31,7 @@ class LearnerTest {
 		learner.addSubject(Subject.BUSSINESS_STUDIES);
 		learner.addSubject(Subject.ENGLISH);
 		learner.addSubject(Subject.AFRIKAANS);
-		assertEquals(true, learner.canAttendLesson());
+		assertEquals(true, learner.hasThreeOrMoreSubjects());
 	}
 	
 	@Test
@@ -35,4 +39,29 @@ class LearnerTest {
 		learner.addSubject(Subject.BUSSINESS_STUDIES);
 		assertEquals(true, learner.registeredForSubject(Subject.BUSSINESS_STUDIES));
 	}
+	
+	@Test
+	void shouldReturnLearnerNotAddedToLessonForInsufficeintSubjects() {
+		learner.addSubject(Subject.BUSSINESS_STUDIES);
+		assertEquals("Thaabit could not be added to lesson", learner.attendLesson(lesson));
+	}
+	
+	@Test
+	void shouldReturnLearnerAddedToLessonForValidSubjectNumberAndRegisteredSubjects() {
+		learner.addSubject(Subject.BUSSINESS_STUDIES);
+		learner.addSubject(Subject.ENGLISH);
+		learner.addSubject(Subject.MATH);
+		assertEquals("Thaabit added to lesson", learner.attendLesson(lesson));
+	}
+	
+	@Test
+	void shouldIncrementTokensBy3() {
+		learner.addSubject(Subject.BUSSINESS_STUDIES);
+		learner.addSubject(Subject.ENGLISH);
+		learner.addSubject(Subject.MATH);
+		learner.attendLesson(lesson);
+		
+		assertEquals(3, learner.getTokens());
+	}
+	
 }

@@ -10,33 +10,34 @@ public class Teacher extends Person {
 	
 	private ArrayList<Subject> qualifiedSubjects;
 	
-	private int tokens;
-	
-	public Teacher(String firstName, String lastName, String email, ArrayList<Subject> qualifiedSubjects) {
+	public Teacher(String firstName, String lastName, String email) {
 		
 		super(firstName, lastName, email);
 		
-		this.qualifiedSubjects = qualifiedSubjects;
-	}
-	
-	public ArrayList<Subject> getQualifiedSubjects() {
-		return qualifiedSubjects;
-	}
-	
-	public int getTokens() {
-		return tokens;
+		qualifiedSubjects = new ArrayList<>();
 	}
 	
 	public String teach(Lesson lesson) {
-		if(qualifiedSubjects.contains(lesson.getSubject())) {
-			if(lesson.getLearnersAttending().size() < 5)
-				return "Lesson has been cancelled";
-			
-			tokens += 5;
-			return "Teaching " + lesson.getSubject().toString();
+		if(isQualifiedToTeachSubject(lesson.getSubject())) {
+			addTokens(5);
+			return getFirstName() + " is teaching lesson";
 		}
 		
+		return getFirstName() + " is not qualified to teach lesson";
+	}
+	
+	public boolean isQualifiedToTeachSubject(Subject subject) {
+		for(Subject sub: qualifiedSubjects)
+			if(sub == subject)
+				return true;
 		
-		return "Teacher is not qualified to teach " + lesson.getSubject().toString();
+		return false;
+	}
+	
+	public boolean addQualifiedSubject(Subject subject) {
+		if(qualifiedSubjects.add(subject))
+			return true;
+		
+		return false;
 	}
 }

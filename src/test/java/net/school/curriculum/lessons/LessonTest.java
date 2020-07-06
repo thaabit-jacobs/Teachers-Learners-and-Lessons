@@ -12,61 +12,92 @@ import net.school.persons.learners.Learner;
 import net.school.persons.teachers.Teacher;
 
 class LessonTest {
-
+	
+	Learner learner  = new Learner("James", "Bald", "");
+	
+	Teacher teacher = new Teacher("Thaabit", "Jacobs", "");
+	
+	Lesson lesson = new Lesson(teacher, LocalTime.of(11, 30), Subject.MATH);
+	
 	@Test
-	void shouldGetTeacherObjSubjectssedIn() {
-		ArrayList<Subject> subjects = new ArrayList<>();
-		subjects.add(Subject.ENGLISH);
-		subjects.add(Subject.AFRIKAANS);
-		subjects.add(Subject.GEOGRAPHY);
-		
-		Teacher teach = new Teacher("Thaabit", "Jacobs", " ", subjects);
-		Lesson less = new Lesson(teach, LocalTime.now(), Subject.ENGLISH);
-		assertEquals(true, teach.equals(less.getTeacher()));
+	void shouldGetTeacherObject() {
+		assertEquals("Thaabit", lesson.getTeacher().getFirstName());
 	}
 	
 	@Test
-	void shouldGetLocalTimeObjPassedIn() {
-		ArrayList<Subject> subjects = new ArrayList<>();
-		subjects.add(Subject.ENGLISH);
-		subjects.add(Subject.AFRIKAANS);
-		subjects.add(Subject.GEOGRAPHY);
-		
-		Teacher teach = new Teacher("Thaabit", "Jacobs", " ", subjects);
-		LocalTime time = LocalTime.of(16, 24, 12);
-		Lesson less = new Lesson(teach, LocalTime.now(), Subject.ENGLISH);
-		
-		assertEquals("16:24:12", time.toString());
+	void shouldGetLocalTimeObject() {
+		assertEquals("11:30", lesson.getTime().toString());
 	}
 	
 	@Test
 	void shouldGetSubject() {
-		ArrayList<Subject> subjects = new ArrayList<>();
-		subjects.add(Subject.ENGLISH);
-		subjects.add(Subject.AFRIKAANS);
-		subjects.add(Subject.GEOGRAPHY);
-		
-		Teacher teach = new Teacher("Thaabit", "Jacobs", " ", subjects);
-		LocalTime time = LocalTime.of(16, 24, 12);
-		Lesson less = new Lesson(teach, LocalTime.now(), Subject.ENGLISH);
-		
-		assertEquals(Subject.ENGLISH, less.getSubject());
+		assertEquals(Subject.MATH, lesson.getSubject());
 	}
 	
 	@Test
-	void shouldAddLearnerToLesson() {
-		ArrayList<Subject> subjects = new ArrayList<>();
-		subjects.add(Subject.ENGLISH);
-		subjects.add(Subject.AFRIKAANS);
-		subjects.add(Subject.GEOGRAPHY);
+	void shouldReturnTrueWhenLearnerIsAddedToMethod() {
+		assertEquals(true, lesson.addLearnerLesson(learner));
+	}
+	
+	@Test
+	void shouldReturnTrueForCancelledLessonForLearnersAtendingLessThanFive() {
+		lesson.addLearnerLesson(learner);
+		assertEquals(true, lesson.isCancelled());
+	}
+	
+	@Test
+	void shouldReturnLessonStatusIsCancelledIfIsCancelledTrue() {
+		lesson.addLearnerLesson(learner);
+		lesson.isCancelled();
+		assertEquals(LessonStatus.CANCELLED, lesson.getLessonStatus());
+	}
+	
+	@Test
+	void shouldReturnlessonHasBeenCancelledForInSufficnetLearnerCount() {
+		assertEquals("Lesson has been cancelled", lesson.start());
+	}
+	
+	@Test
+	void shouldReturnLessonHasStartedForSufficentStudentCount() {
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		assertEquals("Lesson has been started", lesson.start());
+	}
+	
+	@Test
+	void shouldReturnLessonHasntFinishedIfLessonHasntStarted() {
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		assertEquals("Lesson hasnt finished", lesson.end());
+	}
+	
+	@Test
+	void shouldReturnLessonHasFinsishedWhenLessonIsStarted() {
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.start();
+		assertEquals("Lesson is finished", lesson.end());
+	}
+	
+	@Test
+	void shouldSetAttendingLessonToFalse() {
+		learner.addSubject(Subject.AFRIKAANS);
+		learner.addSubject(Subject.BUSSINESS_STUDIES);
+		learner.addSubject(Subject.MATH);
 		
-		Teacher teach = new Teacher("Thaabit", "Jacobs", " ", subjects);
-		LocalTime time = LocalTime.of(16, 24, 12);
-		Lesson less = new Lesson(teach, LocalTime.now(), Subject.ENGLISH);
-		Learner learn = new Learner("thaabit", "jacobs", " ", subjects);
+		lesson.addLearnerLesson(learner);
 		
-		less.addLearnerLesson(learn);
-		
-		assertEquals("Thaabit Jacobs", less.getLearnersAttending().get(0).getFullName());
+		lesson.start();
+		lesson.end();
+		assertEquals(true, learner.getAttendingLesson() == false);
 	}
 }

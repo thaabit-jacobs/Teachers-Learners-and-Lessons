@@ -21,6 +21,8 @@ public class Learner extends Person {
 	
 	private EnumMap<Subject, AquiredType> notes;
 	
+	private boolean attendingLesson;
+	
 	public Learner(String firstName, String lastName, String email) {
 		
 		super(firstName, lastName, email);
@@ -30,16 +32,40 @@ public class Learner extends Person {
 		notes = new EnumMap<Subject, AquiredType>(Subject.class);
 	}
 	
-	public boolean addSubject(Subject sub) {
-		return registeredSubjects.add(sub);
+	public boolean getAttendingLesson() {
+		return attendingLesson;
 	}
 	
-	/*
-	public EnumMap<Subject, AquiredType> getNotes(){
-		return notes;
-	}*/
+	public String attendLesson(Lesson lesson) {
+			if(hasThreeOrMoreSubjects() && registeredForSubject(lesson.getSubject()) && !attendingLesson) {
+				lesson.addLearnerLesson(this);
+				
+				addTokens(3);
+				
+				notes.put(lesson.getSubject(), AquiredType.ATTENDED_LESSON);
+				
+				attendingLesson = true;
+				
+				return getFirstName() + " added to lesson";
+			}
+			
+		return getFirstName() + " could not be added to lesson";
+	}
 	
-	public boolean canAttendLesson() {
+	public String askForNotes(Learner learner, Lesson lesson) {
+		if(registeredForSubject(lesson.getSubject())) {
+			
+		}
+	}
+	
+	public boolean addSubject(Subject sub) {
+		if(registeredSubjects.add(sub))
+			return true;
+		
+		return false;
+	}
+	
+	public boolean hasThreeOrMoreSubjects() {
 		if(registeredSubjects.size() >= 3)
 			return true;
 		
@@ -64,5 +90,9 @@ public class Learner extends Person {
 		status += "Tokens : " + getTokens();
 		
 		return status;
+	}
+	
+	public void setAttendingLesson(boolean attending) {
+		attendingLesson = attending;
 	}
 }
