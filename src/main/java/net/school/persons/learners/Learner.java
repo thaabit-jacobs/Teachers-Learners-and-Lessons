@@ -3,6 +3,7 @@ package net.school.persons.learners;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class Learner extends Person {
 	
 	private ArrayList<Subject> registeredSubjects;
 	
-	private EnumMap<Subject, AquiredType> notes;
+	private HashMap<Lesson, AquiredType> notes;
 	
 	private boolean attendingLesson;
 	
@@ -29,23 +30,23 @@ public class Learner extends Person {
 		
 		registeredSubjects = new ArrayList<>();
 		
-		notes = new EnumMap<Subject, AquiredType>(Subject.class);
+		notes = new HashMap<>();
 	}
 	
 	public boolean getAttendingLesson() {
 		return attendingLesson;
 	}
 	
+	public HashMap<Lesson, AquiredType> getNotes() {
+		return notes;
+	}
+	
 	public String attendLesson(Lesson lesson) {
 			if(hasThreeOrMoreSubjects() && registeredForSubject(lesson.getSubject()) && !attendingLesson) {
 				lesson.addLearnerLesson(this);
-				
 				addTokens(3);
-				
-				notes.put(lesson.getSubject(), AquiredType.ATTENDED_LESSON);
-				
+				notes.put(lesson, AquiredType.ATTENDED_LESSON);
 				attendingLesson = true;
-				
 				return getFirstName() + " added to lesson";
 			}
 			
@@ -53,9 +54,26 @@ public class Learner extends Person {
 	}
 	
 	public String askForNotes(Learner learner, Lesson lesson) {
-		if(registeredForSubject(lesson.getSubject())) {
-			
+		if(hasLessonNotes(learner, lesson)) {
+			if(registeredForSubject(lesson.getSubject())) {
+				if(getTokens() > 2) {
+					notes.put(lesson, AquiredType.BOUGHT);
+					deductTokens(2);
+					return "Bought lesson notes for 2 tokens";
+				} else
+					return "Not enough tokens";
+				
+			} else {
+				if(getTokens() > 5) {
+					notes.put(lesson, AquiredType.BOUGHT);
+					deductTokens(5);
+					return "Bought lesson notes for 5 tokens";
+				} else
+					return "Not enough tokens";
+			}	
 		}
+		
+		return learner.getFirstName() + " does not have lesson notes";
 	}
 	
 	public boolean addSubject(Subject sub) {
@@ -80,11 +98,21 @@ public class Learner extends Person {
 		return false;
 	}
 	
+	public boolean hasLessonNotes(Learner learner, Lesson lesson) {
+		Set<Map.Entry<Lesson, AquiredType>> set = learner.getNotes().entrySet();
+		
+		for(Map.Entry<Lesson, AquiredType> me: set)
+			if(me.getKey().equals(lesson))
+				return true;
+		
+		return false;
+	}
+	
 	public String status() {
-		Set<Map.Entry<Subject, AquiredType>> set = notes.entrySet();
+		Set<Map.Entry<Lesson, AquiredType>> set = notes.entrySet();
 		String status = "";
 		
-		for(Map.Entry<Subject, AquiredType> me: set)
+		for(Map.Entry<Lesson, AquiredType> me: set)
 			status += me.getKey() + " : " + me.getValue() + "\n"; 
 		
 		status += "Tokens : " + getTokens();
