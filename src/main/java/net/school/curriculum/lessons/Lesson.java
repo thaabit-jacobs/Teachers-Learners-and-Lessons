@@ -90,4 +90,5 @@ public class Lesson {
 		for(Learner l: learnersAttending) 
 			l.setAttendingLesson(false);
 	}
+	
 }

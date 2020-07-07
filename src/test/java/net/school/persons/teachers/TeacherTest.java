@@ -38,4 +38,20 @@ class TeacherTest {
 		teacher.addQualifiedSubject(Subject.MATH);
 		assertEquals("Thaabit is teaching lesson", teacher.teach(lesson));
 	}
+	
+	@Test
+	void shouldReturnFlaseForInsufficentLessonsTaught() {
+		assertEquals(false, teacher.qualifiesForDiscount());
+	}
+	
+	@Test
+	void shouldReturnTrueForSuffiecentLessonsTaught() {
+		teacher.addQualifiedSubject(Subject.MATH);
+		teacher.teach(lesson);
+		teacher.teach(lesson);
+		teacher.teach(lesson);
+		teacher.teach(lesson);
+		teacher.teach(lesson);
+		assertEquals(true, teacher.qualifiesForDiscount());
+	}
 }

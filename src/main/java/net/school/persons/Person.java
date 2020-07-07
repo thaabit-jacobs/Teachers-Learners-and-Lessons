@@ -8,8 +8,6 @@ public class Person {
 	
 	private String email;
 	
-	private int token;
-	
 	public Person(String firstName, String lastName, String email) {
 		
 		this.firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1).toLowerCase();
@@ -36,15 +34,5 @@ public class Person {
 		return email;
 	}
 	
-	public int getTokens() {
-		return token;
-	}
-	
-	public void deductTokens(int amount) {
-		token -= amount;
-	}
-	
-	public void addTokens(int amount) {
-		token += amount;
-	}
+
 }

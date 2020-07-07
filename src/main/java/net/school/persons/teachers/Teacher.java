@@ -5,10 +5,15 @@ import java.util.ArrayList;
 import net.school.curriculum.lessons.Lesson;
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.Person;
+import net.school.persons.Spendable;
 
-public class Teacher extends Person {
+public class Teacher extends Person implements Spendable{
+	
+	private int token;
 	
 	private ArrayList<Subject> qualifiedSubjects;
+	
+	private int lessonsTaught;
 	
 	public Teacher(String firstName, String lastName, String email) {
 		
@@ -17,8 +22,22 @@ public class Teacher extends Person {
 		qualifiedSubjects = new ArrayList<>();
 	}
 	
+	public int getTokens() {
+		return token;
+	}
+	
+	public void deductTokens(int amount) {
+		token -= amount;
+	}
+	
+	public void addTokens(int amount) {
+		token += amount;
+	}
+	
+	
 	public String teach(Lesson lesson) {
 		if(isQualifiedToTeachSubject(lesson.getSubject())) {
+			lessonsTaught++;
 			addTokens(5);
 			return getFirstName() + " is teaching lesson";
 		}
@@ -36,6 +55,13 @@ public class Teacher extends Person {
 	
 	public boolean addQualifiedSubject(Subject subject) {
 		if(qualifiedSubjects.add(subject))
+			return true;
+		
+		return false;
+	}
+	
+	public boolean qualifiesForDiscount() {
+		if(lessonsTaught >= 5)
 			return true;
 		
 		return false;

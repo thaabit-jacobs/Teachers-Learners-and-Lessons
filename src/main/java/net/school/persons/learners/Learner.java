@@ -14,9 +14,12 @@ import net.school.curriculum.lessons.MathLesson;
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.Person;
+import net.school.persons.Spendable;
 import net.school.persons.teachers.Teacher;
 
-public class Learner extends Person {
+public class Learner extends Person implements Spendable{
+	
+	private int token;
 	
 	private ArrayList<Subject> registeredSubjects;
 	
@@ -33,12 +36,28 @@ public class Learner extends Person {
 		notes = new HashMap<>();
 	}
 	
+	public int getTokens() {
+		return token;
+	}
+	
+	public void deductTokens(int amount) {
+		token -= amount;
+	}
+	
+	public void addTokens(int amount) {
+		token += amount;
+	}
+	
 	public boolean getAttendingLesson() {
 		return attendingLesson;
 	}
 	
 	public HashMap<Lesson, AquiredType> getNotes() {
 		return notes;
+	}
+	
+	public void setAttendingLesson(boolean attending) {
+		attendingLesson = attending;
 	}
 	
 	public String attendLesson(Lesson lesson) {
@@ -113,14 +132,10 @@ public class Learner extends Person {
 		String status = "";
 		
 		for(Map.Entry<Lesson, AquiredType> me: set)
-			status += me.getKey() + " : " + me.getValue() + "\n"; 
+			status += me.getKey().getSubject() + " notes" + " : " + me.getValue() + "\n"; 
 		
 		status += "Tokens : " + getTokens();
 		
 		return status;
-	}
-	
-	public void setAttendingLesson(boolean attending) {
-		attendingLesson = attending;
 	}
 }
