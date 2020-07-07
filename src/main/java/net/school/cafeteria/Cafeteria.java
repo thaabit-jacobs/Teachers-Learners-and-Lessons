@@ -1,7 +1,6 @@
 package net.school.cafeteria;
 
 import net.school.cafeteria.menue.MenueItem;
-import net.school.persons.Person;
 import net.school.persons.caferteria_manager.CafeteriaManager;
 import net.school.persons.learners.Learner;
 import net.school.persons.teachers.Teacher;

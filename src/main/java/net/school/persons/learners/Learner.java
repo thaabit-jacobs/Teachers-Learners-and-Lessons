@@ -1,21 +1,15 @@
 package net.school.persons.learners;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import net.school.curriculum.lessons.AfrikaansLesson;
-import net.school.curriculum.lessons.EnglishLesson;
 import net.school.curriculum.lessons.Lesson;
-import net.school.curriculum.lessons.MathLesson;
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.Person;
 import net.school.persons.Spendable;
-import net.school.persons.teachers.Teacher;
 
 public class Learner extends Person implements Spendable{
 	

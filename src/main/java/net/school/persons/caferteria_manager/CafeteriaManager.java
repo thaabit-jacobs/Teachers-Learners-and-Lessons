@@ -2,12 +2,9 @@ package net.school.persons.caferteria_manager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import net.school.cafeteria.menue.MenueItem;
-import net.school.curriculum.lessons.Lesson;
-import net.school.curriculum.notes.AquiredType;
 import net.school.persons.Person;
 
 public class CafeteriaManager extends Person{
