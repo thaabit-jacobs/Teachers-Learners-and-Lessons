@@ -1,0 +1,36 @@
+-------------------------------------------------------------------------------
+Test set: net.school.persons.learners.LearnerTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 8, Skipped: 0, Time elapsed: 0.001 s <<< FAILURE! - in net.school.persons.learners.LearnerTest
+shouldReturnDoesNotHaveLessonNotesWhenAskingAlearnerWithoutNotes  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at net.school.persons.learners.LearnerTest.shouldReturnDoesNotHaveLessonNotesWhenAskingAlearnerWithoutNotes(LearnerTest.java:89)
+
+shouldBuyLessonNotesForTwoTokens  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at net.school.persons.learners.LearnerTest.shouldBuyLessonNotesForTwoTokens(LearnerTest.java:112)
+
+shouldBuyLessonNotesForFiveTokens  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at net.school.persons.learners.LearnerTest.shouldBuyLessonNotesForFiveTokens(LearnerTest.java:132)
+
+shouldReturnLearnerAddedToLessonForValidSubjectNumberAndRegisteredSubjects  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at net.school.persons.learners.LearnerTest.shouldReturnLearnerAddedToLessonForValidSubjectNumberAndRegisteredSubjects(LearnerTest.java:52)
+
+shouldReturnLearnerNotAddedToLessonForInsufficeintSubjects  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at net.school.persons.learners.LearnerTest.shouldReturnLearnerNotAddedToLessonForInsufficeintSubjects(LearnerTest.java:43)
+
+shouldIncrementTokensBy3  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at net.school.persons.learners.LearnerTest.shouldIncrementTokensBy3(LearnerTest.java:63)
+
+shouldNotEnoughTokensWhenTryingToByNotesWithoutTokens  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at net.school.persons.learners.LearnerTest.shouldNotEnoughTokensWhenTryingToByNotesWithoutTokens(LearnerTest.java:98)
+
+shouldReturnTrueForLessonNotes  Time elapsed: 0 s  <<< ERROR!
+java.lang.NullPointerException
+	at net.school.persons.learners.LearnerTest.shouldReturnTrueForLessonNotes(LearnerTest.java:76)
+

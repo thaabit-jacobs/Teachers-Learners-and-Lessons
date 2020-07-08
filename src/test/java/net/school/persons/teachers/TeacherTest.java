@@ -3,7 +3,6 @@ package net.school.persons.teachers;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 

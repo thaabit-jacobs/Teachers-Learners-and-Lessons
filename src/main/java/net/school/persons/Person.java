@@ -33,6 +33,4 @@ public class Person {
 	public String getEmailAddress() {
 		return email;
 	}
-	
-
 }

@@ -1,16 +1,12 @@
 package net.school.persons.principal;
 
-import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-import net.school.curriculum.lessons.EnglishLesson;
-import net.school.curriculum.lessons.GeographyLesson;
 import net.school.curriculum.lessons.Lesson;
-import net.school.curriculum.lessons.MathLesson;
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.Person;
-import net.school.persons.learners.Learner;
-import net.school.persons.teachers.Teacher;
 
 public class Principal extends Person {
 	
@@ -46,4 +42,20 @@ public class Principal extends Person {
 	public HashMap<Subject , Integer> getLessonCount() {
 		return LessonCount;
 	}
+	
+	public String status() {
+		Set<Map.Entry<Subject, Integer>> set = LessonCount.entrySet();
+		String status = "";
+		
+		System.out.println("Lessons sceduled for the day");
+		for(Map.Entry<Subject, Integer> me: set) {
+			if(me.getValue() != 0)
+				status += me.getKey() + " : " + me.getValue() + "\n"; 
+		}
+			
+		
+		status += "Cancelled lessons : " + cancelledLessonsForTheDay;
+		
+		return status;
+	} 
 }

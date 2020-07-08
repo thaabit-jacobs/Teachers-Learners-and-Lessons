@@ -15,11 +15,11 @@ public class Learner extends Person implements Spendable{
 	
 	private int token;
 	
+	private boolean attendingLesson;
+	
 	private ArrayList<Subject> registeredSubjects;
 	
 	private HashMap<Lesson, AquiredType> notes;
-	
-	private boolean attendingLesson;
 	
 	public Learner(String firstName, String lastName, String email) {
 		
@@ -34,6 +34,14 @@ public class Learner extends Person implements Spendable{
 		return token;
 	}
 	
+	public boolean getAttendingLesson() {
+		return attendingLesson;
+	}
+	
+	public void setAttendingLesson(boolean attending) {
+		attendingLesson = attending;
+	}
+	
 	public void deductTokens(int amount) {
 		token -= amount;
 	}
@@ -42,24 +50,20 @@ public class Learner extends Person implements Spendable{
 		token += amount;
 	}
 	
-	public boolean getAttendingLesson() {
-		return attendingLesson;
-	}
-	
 	public HashMap<Lesson, AquiredType> getNotes() {
 		return notes;
-	}
-	
-	public void setAttendingLesson(boolean attending) {
-		attendingLesson = attending;
 	}
 	
 	public String attendLesson(Lesson lesson) {
 			if(hasThreeOrMoreSubjects() && registeredForSubject(lesson.getSubject()) && !attendingLesson) {
 				lesson.addLearnerLesson(this);
+				
 				addTokens(3);
+				
 				notes.put(lesson, AquiredType.ATTENDED_LESSON);
+				
 				attendingLesson = true;
+				
 				return getFirstName() + " added to lesson";
 			}
 			
@@ -71,16 +75,20 @@ public class Learner extends Person implements Spendable{
 			if(registeredForSubject(lesson.getSubject())) {
 				if(getTokens() > 2) {
 					notes.put(lesson, AquiredType.BOUGHT);
+					
 					deductTokens(2);
-					return "Bought lesson notes for 2 tokens";
+					
+					return getFirstName() + " bought lesson notes for 2 tokens";
 				} else
 					return "Not enough tokens";
 				
 			} else {
 				if(getTokens() > 5) {
 					notes.put(lesson, AquiredType.BOUGHT);
+					
 					deductTokens(5);
-					return "Bought lesson notes for 5 tokens";
+					
+					return getFirstName() + " bought lesson notes for 5 tokens";
 				} else
 					return "Not enough tokens";
 			}	

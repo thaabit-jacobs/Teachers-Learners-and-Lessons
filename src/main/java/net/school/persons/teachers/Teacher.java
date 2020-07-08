@@ -38,7 +38,9 @@ public class Teacher extends Person implements Spendable{
 	public String teach(Lesson lesson) {
 		if(isQualifiedToTeachSubject(lesson.getSubject())) {
 			lessonsTaught++;
+			
 			addTokens(5);
+			
 			return lesson.start();
 		}
 		

@@ -1,5 +1,6 @@
 package net.school.persons.caferteria_manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -11,7 +12,7 @@ public class CafeteriaManager extends Person{
 	
 	private int totalTokens;
 	
-	private HashMap<Person, MenueItem> sales;
+	private HashMap<Person, ArrayList<MenueItem>> sales;
 	
 	public CafeteriaManager(String firstName, String lastName, String email) {
 		super(firstName, lastName, email);
@@ -29,15 +30,28 @@ public class CafeteriaManager extends Person{
 	}
 	
 	public void newSale(Person p, MenueItem mi) {
-		sales.put(p, mi);
+		if(sales.containsKey(p)) {
+			ArrayList<MenueItem> menueItem  = sales.get(p);
+			
+			menueItem.add(mi);
+			
+			sales.put(p, menueItem);
+		} else {
+			ArrayList<MenueItem> menue = new ArrayList<MenueItem>();
+			
+			menue.add(mi);
+			
+			sales.put(p, menue); 
+		}
+			
 	}
 	
 	public String status() {
-		Set<Map.Entry<Person, MenueItem>> set = sales.entrySet();
+		Set<Map.Entry<Person, ArrayList<MenueItem>>> set = sales.entrySet();
 		String status = "";
 		
-		for(Map.Entry<Person, MenueItem> me: set)
-			status += me.getKey().getFirstName()  + " " + me.getKey().getLastName() +  "bought " + " : " + me.getValue() + "\n"; 
+		for(Map.Entry<Person, ArrayList<MenueItem>> me: set)
+			status += me.getKey().getFirstName()  + " " + me.getKey().getLastName() +  " bought " + " : " + me.getValue() + "\n"; 
 		
 		status += "Total Tokens : " + getTokens();
 		

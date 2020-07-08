@@ -1,68 +1,80 @@
 package net.school;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 
+import net.school.cafeteria.Cafeteria;
 import net.school.curriculum.lessons.AfrikaansLesson;
 import net.school.curriculum.lessons.EnglishLesson;
 import net.school.curriculum.lessons.Lesson;
 import net.school.curriculum.lessons.LifeSciencesLesson;
 import net.school.curriculum.lessons.MathLesson;
 import net.school.curriculum.subjects.Subject;
+import net.school.persons.caferteria_manager.CafeteriaManager;
 import net.school.persons.learners.Learner;
 import net.school.persons.principal.Principal;
 import net.school.persons.teachers.Teacher;
 
 public class School {
 	
-	private Principal principal = new Principal("John", "Snith", "");
+	Principal principal = new Principal("John", "Snith", "");
 	
-	private Teacher linda = new Teacher("Linda", "Carl", "");
-	private Teacher nkosi = new Teacher("Nkosi", "Jones", "");
-	private Teacher bill = new Teacher("Bill", "James", "");
+	CafeteriaManager cafeMan = new CafeteriaManager("Bill", "Meyers", "");
+
+	Cafeteria cafe = new Cafeteria(cafeMan);
 	
-	private Lesson math1 = new MathLesson(linda, LocalTime.of(10, 30));
-	private Lesson english = new EnglishLesson(nkosi, LocalTime.of(11, 45));
-	private Lesson afrikaans = new AfrikaansLesson(bill, LocalTime.of(12, 00));
-	private Lesson math2 = new MathLesson(nkosi, LocalTime.of(1, 30));
-	private Lesson lifeSci = new LifeSciencesLesson(linda, LocalTime.of(2, 45));
-	
-	private Learner thaabit = new Learner("Thaabit", "Jacobs", "");
-	private Learner mike = new Learner("Mike", "Brown", "");
-	private Learner ayapha = new Learner("Mihlaya", "Ayapa", "");
-	private Learner amanda = new Learner("Amanda", "Mrsg", "");
-	private Learner jim = new Learner("Jim", "Jones", "");
+	ArrayList<Teacher> teachers = new ArrayList();
+	ArrayList<Learner> learners = new ArrayList();
+	ArrayList<Lesson> lessons = new ArrayList();
 	
 	public School() {
+		teachers.add( new Teacher("Linda", "Carl", ""));
+		teachers.add( new Teacher("Nkosi", "Jones", ""));
+		teachers.add( new Teacher("Bill", "James", ""));
 		
-		linda.addQualifiedSubject(Subject.MATH);
-		linda.addQualifiedSubject(Subject.AFRIKAANS);
+		learners.add( new Learner("Thaabit", "Jacobs", ""));
+		learners.add( new Learner("Mike", "Brown", ""));
+		learners.add( new Learner("Mihlaya", "Ayapa", ""));
+		learners.add( new Learner("Amanda", "Mrsg", ""));
+		learners.add( new Learner("Jim", "Jones", ""));
 		
-		nkosi.addQualifiedSubject(Subject.ENGLISH);
+		lessons.add( new MathLesson(teachers.get(0), LocalTime.of(10, 30)));
+		lessons.add( new EnglishLesson(teachers.get(1), LocalTime.of(11, 45)));
+		lessons.add( new AfrikaansLesson(teachers.get(2), LocalTime.of(12, 00)));
+		lessons.add( new MathLesson(teachers.get(1), LocalTime.of(1, 30)));
+		lessons.add( new LifeSciencesLesson(teachers.get(0), LocalTime.of(2, 45)));
 		
-		bill.addQualifiedSubject(Subject.LIFE_SCIENCES);
+		teachers.get(0).addQualifiedSubject(Subject.MATH);
+		teachers.get(0).addQualifiedSubject(Subject.AFRIKAANS);
 		
-		thaabit.addSubject(Subject.MATH);
-		thaabit.addSubject(Subject.LIFE_SCIENCES);
-		thaabit.addSubject(Subject.AFRIKAANS);
+		teachers.get(1).addQualifiedSubject(Subject.ENGLISH);
 		
+		teachers.get(2).addQualifiedSubject(Subject.LIFE_SCIENCES);
 		
-		mike.addSubject(Subject.MATH);
-		mike.addSubject(Subject.GEOGRAPHY);
-		mike.addSubject(Subject.AFRIKAANS);
-		
-		
-		ayapha.addSubject(Subject.MATH);
-		ayapha.addSubject(Subject.ENGLISH);
-		ayapha.addSubject(Subject.AFRIKAANS);
-		
-		
-		amanda.addSubject(Subject.MATH);
-		amanda.addSubject(Subject.GEOGRAPHY);
-		amanda.addSubject(Subject.LIFE_SCIENCES);
+		learners.get(0).addSubject(Subject.MATH);
+		learners.get(0).addSubject(Subject.LIFE_SCIENCES);
+		learners.get(0).addSubject(Subject.AFRIKAANS);
 		
 		
-		jim.addSubject(Subject.MATH);
-		jim.addSubject(Subject.GEOGRAPHY);
-		jim.addSubject(Subject.LIFE_SCIENCES);
+		learners.get(1).addSubject(Subject.MATH);
+		learners.get(1).addSubject(Subject.GEOGRAPHY);
+		learners.get(1).addSubject(Subject.LIFE_SCIENCES);
+		
+		
+		learners.get(2).addSubject(Subject.MATH);
+		learners.get(2).addSubject(Subject.ENGLISH);
+		learners.get(2).addSubject(Subject.LIFE_SCIENCES);
+		
+		
+		learners.get(3).addSubject(Subject.MATH);
+		learners.get(3).addSubject(Subject.GEOGRAPHY);
+		learners.get(3).addSubject(Subject.LIFE_SCIENCES);
+		
+		
+		learners.get(4).addSubject(Subject.MATH);
+		learners.get(4).addSubject(Subject.ENGLISH);
+		learners.get(4).addSubject(Subject.LIFE_SCIENCES);
 	}
+	
+	
 }

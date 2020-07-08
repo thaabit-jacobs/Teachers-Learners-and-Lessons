@@ -2,7 +2,6 @@ package net.school.curriculum.lessons;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.learners.Learner;
@@ -71,6 +70,7 @@ public class Lesson {
 	public boolean isCancelled() {
 		if(learnersAttending.size() < 5) {
 			lessonStatus = LessonStatus.CANCELLED;
+			
 			return true;
 		}
 			
@@ -79,22 +79,28 @@ public class Lesson {
 	
 	public String start() {
 		if(isCancelled()) {
+			setAttendingToFalse();
+			
 			Principal.incrementCancelledLessonCount();
+			
 			return "Lesson has been cancelled";
 		}
 			
 		
 		lessonStatus = LessonStatus.ACTIVE;
+		
 		return "Lesson has been started";
 	}
 	
 	public String end() {
 		if(lessonStatus == LessonStatus.ACTIVE) {
 			lessonStatus = LessonStatus.COMPLETED;
+			
 			setAttendingToFalse();
+			
 			return "Lesson is finished";
 		}
 		
-		return "Lesson hasnt finished";
+		return "Lesson is " + getLessonStatus();
 	}
 }

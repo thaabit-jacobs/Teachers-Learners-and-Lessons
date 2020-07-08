@@ -1,11 +1,10 @@
 package net.school.curriculum.lessons;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-
-import org.junit.jupiter.api.Test;
 
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.learners.Learner;

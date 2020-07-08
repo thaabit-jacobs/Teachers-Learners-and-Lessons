@@ -31,6 +31,7 @@ public class Cafeteria {
 	public String buy(Teacher teacher, MenueItem mi) {
 		if(teacher.qualifiesForDiscount()) {
 			int newPrice = mi.getCost()  - (int) (mi.getCost() * 0.25);
+			
 			if(teacher.getTokens() >= newPrice) {
 				teacher.deductTokens(newPrice);
 				
