@@ -17,7 +17,7 @@ class AfrikaansLessonTest {
 		ArrayList<Subject> subjects = new ArrayList<>();
 		subjects.add(Subject.ENGLISH);
 		
-		Teacher teach = new Teacher("Thaabit", "Jacobs", " ", subjects);
+		Teacher teach = new Teacher("Thaabit", "Jacobs", " ");
 		Lesson ml = new AfrikaansLesson(teach, LocalTime.now());
 		
 		assertEquals(Subject.AFRIKAANS, ml.getSubject());

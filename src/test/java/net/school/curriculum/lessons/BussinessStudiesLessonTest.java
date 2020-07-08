@@ -17,7 +17,7 @@ class BussinessStudiesLessonTest {
 		ArrayList<Subject> subjects = new ArrayList<>();
 		subjects.add(Subject.ENGLISH);
 		
-		Teacher teach = new Teacher("Thaabit", "Jacobs", " ", subjects);
+		Teacher teach = new Teacher("Thaabit", "Jacobs", " ");
 		Lesson ml = new BussinessStudiesLesson(teach, LocalTime.now());
 		
 		assertEquals(Subject.BUSSINESS_STUDIES, ml.getSubject());

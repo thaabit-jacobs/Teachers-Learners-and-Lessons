@@ -11,9 +11,9 @@ public class Teacher extends Person implements Spendable{
 	
 	private int token;
 	
-	private ArrayList<Subject> qualifiedSubjects;
-	
 	private int lessonsTaught;
+	
+	private ArrayList<Subject> qualifiedSubjects;
 	
 	public Teacher(String firstName, String lastName, String email) {
 		
@@ -39,7 +39,7 @@ public class Teacher extends Person implements Spendable{
 		if(isQualifiedToTeachSubject(lesson.getSubject())) {
 			lessonsTaught++;
 			addTokens(5);
-			return getFirstName() + " is teaching lesson";
+			return lesson.start();
 		}
 		
 		return getFirstName() + " is not qualified to teach lesson";

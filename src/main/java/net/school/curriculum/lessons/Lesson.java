@@ -2,9 +2,11 @@ package net.school.curriculum.lessons;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.learners.Learner;
+import net.school.persons.principal.Principal;
 import net.school.persons.teachers.Teacher;
 
 public class Lesson {
@@ -15,9 +17,9 @@ public class Lesson {
 	
 	private Subject subject;
 	
-	private ArrayList<Learner> learnersAttending;
-	
 	private LessonStatus lessonStatus;
+	
+	private ArrayList<Learner> learnersAttending;
 	
 	public Lesson(Teacher teacher, LocalTime time, Subject subject) {
 		
@@ -30,6 +32,8 @@ public class Lesson {
 		this.learnersAttending = new ArrayList<> ();
 		
 		this.lessonStatus = LessonStatus.PENDING;
+		
+		Principal.incrementLessonCount(this);
 	}
 	
 	public Teacher getTeacher() {
@@ -46,6 +50,15 @@ public class Lesson {
 	
 	public LessonStatus getLessonStatus() {
 		return lessonStatus;
+	}
+	
+	public void setLessonStatus(LessonStatus ls) {
+		lessonStatus = ls;
+	}
+	
+	public void setAttendingToFalse() {
+		for(Learner l: learnersAttending) 
+			l.setAttendingLesson(false);
 	}
 	
 	public boolean addLearnerLesson(Learner learner) {
@@ -65,9 +78,12 @@ public class Lesson {
 	}
 	
 	public String start() {
-		if(isCancelled())
+		if(isCancelled()) {
+			Principal.incrementCancelledLessonCount();
 			return "Lesson has been cancelled";
-
+		}
+			
+		
 		lessonStatus = LessonStatus.ACTIVE;
 		return "Lesson has been started";
 	}
@@ -81,14 +97,4 @@ public class Lesson {
 		
 		return "Lesson hasnt finished";
 	}
-	
-	public void setLessonStatus(LessonStatus ls) {
-		lessonStatus = ls;
-	}
-	
-	public void setAttendingToFalse() {
-		for(Learner l: learnersAttending) 
-			l.setAttendingLesson(false);
-	}
-	
 }

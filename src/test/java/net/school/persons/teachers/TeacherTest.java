@@ -17,6 +17,8 @@ class TeacherTest {
 	
 	Lesson lesson = new Lesson(teacher, LocalTime.of(11, 30), Subject.MATH);
 	
+	Learner learner  = new Learner("Thaabit", "Jacobs", "");
+	
 	@Test
 	void shouldReturnTrueWhenAddingSubjectToRegisteredSubjects() {
 		assertEquals(true, teacher.addQualifiedSubject(Subject.AFRIKAANS));
@@ -36,7 +38,12 @@ class TeacherTest {
 	@Test
 	void shouldReturnIsQualifiedForQualifiedSubjects() {
 		teacher.addQualifiedSubject(Subject.MATH);
-		assertEquals("Thaabit is teaching lesson", teacher.teach(lesson));
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		lesson.addLearnerLesson(learner);
+		assertEquals("Lesson has been started", teacher.teach(lesson));
 	}
 	
 	@Test

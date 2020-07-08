@@ -30,16 +30,4 @@ class PersonTest {
 	}
 	
 	
-	@Test
-	void shouldAddTokens() {
-		p.addTokens(10);
-		assertEquals(10, p.getTokens());
-	}
-	
-	@Test
-	void shouldFromTokens() {
-		p.addTokens(10);
-		p.deductTokens(5);
-		assertEquals(5, p.getTokens());
-	}
 }

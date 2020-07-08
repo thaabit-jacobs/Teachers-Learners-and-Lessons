@@ -17,7 +17,7 @@ class LifeSciencesLessonTest {
 		ArrayList<Subject> subjects = new ArrayList<>();
 		subjects.add(Subject.ENGLISH);
 		
-		Teacher teach = new Teacher("Thaabit", "Jacobs", " ", subjects);
+		Teacher teach = new Teacher("Thaabit", "Jacobs", " ");
 		Lesson ml = new LifeSciencesLesson(teach, LocalTime.now());
 		
 		assertEquals(Subject.LIFE_SCIENCES, ml.getSubject());
