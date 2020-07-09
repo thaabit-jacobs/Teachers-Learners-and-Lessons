@@ -9,9 +9,12 @@ import org.junit.jupiter.api.Test;
 import net.school.curriculum.lessons.Lesson;
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.learners.Learner;
+import net.school.persons.principal.Principal;
 
 class TeacherTest {
-
+	
+	Principal principal = new Principal("Ruiter", "Brad", "");
+	
 	Teacher teacher = new Teacher("Thaabit", "Jacobs", "");
 	
 	Lesson lesson = new Lesson(teacher, LocalTime.of(11, 30), Subject.MATH);

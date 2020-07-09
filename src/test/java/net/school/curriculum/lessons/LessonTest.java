@@ -8,9 +8,12 @@ import java.time.LocalTime;
 
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.learners.Learner;
+import net.school.persons.principal.Principal;
 import net.school.persons.teachers.Teacher;
 
 class LessonTest {
+	
+	Principal principal = new Principal("Ruiter", "Brad", "");
 	
 	Learner learner  = new Learner("James", "Bald", "");
 	
@@ -73,7 +76,7 @@ class LessonTest {
 		lesson.addLearnerLesson(learner);
 		lesson.addLearnerLesson(learner);
 		lesson.addLearnerLesson(learner);
-		assertEquals("Lesson hasnt finished", lesson.end());
+		assertEquals("Lesson is PENDING", lesson.end());
 	}
 	
 	@Test

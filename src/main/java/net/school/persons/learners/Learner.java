@@ -133,6 +133,7 @@ public class Learner extends Person implements Spendable{
 		Set<Map.Entry<Lesson, AquiredType>> set = notes.entrySet();
 		String status = "";
 		
+		System.out.println(getFirstName() + " " + getLastName());
 		for(Map.Entry<Lesson, AquiredType> me: set)
 			status += me.getKey().getSubject() + " notes" + " : " + me.getValue() + "\n"; 
 		

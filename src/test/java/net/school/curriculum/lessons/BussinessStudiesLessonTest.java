@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 import net.school.curriculum.subjects.Subject;
+import net.school.persons.principal.Principal;
 import net.school.persons.teachers.Teacher;
 
 class BussinessStudiesLessonTest {
 
+	Principal principal = new Principal("Ruiter", "Brad", "");
+	
 	@Test
 	void shouldReturnBussinessStudiesAsSubject() {
 		ArrayList<Subject> subjects = new ArrayList<>();

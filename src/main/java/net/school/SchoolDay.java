@@ -30,7 +30,6 @@ public class SchoolDay {
 		System.out.print("\n");
 		
 		System.out.print("\n");
-		
 		//Life Science class
 		System.out.println("Life Science lesson");
 		System.out.println(sch.learners.get(0).attendLesson(sch.lessons.get(4)));
