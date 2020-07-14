@@ -8,12 +8,9 @@ import java.util.Set;
 import net.school.curriculum.lessons.Lesson;
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
-import net.school.persons.Person;
-import net.school.persons.Spendable;
+import net.school.persons.Consumer;
 
-public class Learner extends Person implements Spendable{
-	
-	private int token;
+public class Learner extends Consumer{
 	
 	private boolean attendingLesson;
 	
@@ -30,24 +27,12 @@ public class Learner extends Person implements Spendable{
 		notes = new HashMap<>();
 	}
 	
-	public int getTokens() {
-		return token;
-	}
-	
 	public boolean getAttendingLesson() {
 		return attendingLesson;
 	}
 	
 	public void setAttendingLesson(boolean attending) {
 		attendingLesson = attending;
-	}
-	
-	public void deductTokens(int amount) {
-		token -= amount;
-	}
-	
-	public void addTokens(int amount) {
-		token += amount;
 	}
 	
 	public HashMap<Lesson, AquiredType> getNotes() {

@@ -6,14 +6,14 @@ import java.util.Map;
 import java.util.Set;
 
 import net.school.cafeteria.menue.MenueItem;
+import net.school.persons.Consumer;
 import net.school.persons.Person;
-import net.school.persons.Spendable;
 
 public class CafeteriaManager extends Person{
 	
 	private int totalTokens;
 	
-	private HashMap<Spendable, ArrayList<MenueItem>> sales;
+	private HashMap<Consumer, ArrayList<MenueItem>> sales;
 	
 	public CafeteriaManager(String firstName, String lastName, String email) {
 		super(firstName, lastName, email);
@@ -30,11 +30,11 @@ public class CafeteriaManager extends Person{
 		return totalTokens;
 	}
 	
-	public HashMap<Spendable, ArrayList<MenueItem>> getSales(){
+	public HashMap<Consumer, ArrayList<MenueItem>> getSales(){
 		return sales;
 	}
 	
-	public void newSale(Spendable s, MenueItem mi) {
+	public void newSale(Consumer s, MenueItem mi) {
 		if(sales.containsKey(s)) {
 			ArrayList<MenueItem> menueItem  = sales.get(s);
 			
@@ -52,11 +52,11 @@ public class CafeteriaManager extends Person{
 	}
 	
 	public String status() {
-		Set<Map.Entry<Spendable, ArrayList<MenueItem>>> set = sales.entrySet();
+		Set<Map.Entry<Consumer, ArrayList<MenueItem>>> set = sales.entrySet();
 		String status = "";
 		
 		System.out.println("Cafeteria manager");
-		for(Map.Entry<Spendable, ArrayList<MenueItem>> me: set) {
+		for(Map.Entry<Consumer, ArrayList<MenueItem>> me: set) {
 			Person p  = (Person)me.getKey();
 			status += p.getFirstName()  + " " + p.getLastName() +  " bought " + " : " + me.getValue() + "\n"; 
 		}

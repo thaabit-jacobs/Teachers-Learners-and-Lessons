@@ -4,12 +4,9 @@ import java.util.ArrayList;
 
 import net.school.curriculum.lessons.Lesson;
 import net.school.curriculum.subjects.Subject;
-import net.school.persons.Person;
-import net.school.persons.Spendable;
+import net.school.persons.Consumer;
 
-public class Teacher extends Person implements Spendable{
-	
-	private int token;
+public class Teacher extends Consumer{
 	
 	private int lessonsTaught;
 	
@@ -21,19 +18,6 @@ public class Teacher extends Person implements Spendable{
 		
 		qualifiedSubjects = new ArrayList<>();
 	}
-	
-	public int getTokens() {
-		return token;
-	}
-	
-	public void deductTokens(int amount) {
-		token -= amount;
-	}
-	
-	public void addTokens(int amount) {
-		token += amount;
-	}
-	
 	
 	public String teach(Lesson lesson) {
 		if(isQualifiedToTeachSubject(lesson.getSubject())) {
