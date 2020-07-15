@@ -3,6 +3,7 @@ package net.school.persons.teachers;
 import java.util.ArrayList;
 
 import net.school.curriculum.lessons.Lesson;
+import net.school.curriculum.lessons.LessonStatus;
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.Consumer;
 
@@ -19,24 +20,27 @@ public class Teacher extends Consumer{
 		qualifiedSubjects = new ArrayList<>();
 	}
 	
+	public void incrementLessonTaught() {
+		lessonsTaught++;
+	}
+	public ArrayList<Subject> getQualifiedSubjects(){
+		return qualifiedSubjects;
+	}
+	
 	public String teach(Lesson lesson) {
-		if(isQualifiedToTeachSubject(lesson.getSubject())) {
-			lessonsTaught++;
-			
-			addTokens(5);
-			
+		if(lesson.isQualifiedToTeachSubject()) {			
 			return lesson.start();
 		}
 		
 		return getFirstName() + " is not qualified to teach lesson";
 	}
 	
-	public boolean isQualifiedToTeachSubject(Subject subject) {
-		for(Subject sub: qualifiedSubjects)
-			if(sub == subject)
-				return true;
+	public String endLesson(Lesson lesson) {
+		if(lesson.getLessonStatus() == LessonStatus.ACTIVE) {
+			return lesson.end();
+		}
 		
-		return false;
+		return "Lesson could not be finished";
 	}
 	
 	public boolean addQualifiedSubject(Subject subject) {

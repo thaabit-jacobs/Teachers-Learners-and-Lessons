@@ -54,4 +54,16 @@ public class Cafeteria {
 			return "Not enough tokens";
 
 	}
+	
+	public static void main(String[] args) {
+		CafeteriaManager cafeMan = new CafeteriaManager("Thaabit", "Jacobs", "");
+
+		Cafeteria cafe = new Cafeteria(cafeMan);
+		
+		Teacher teacher = new Teacher("James", "Bald", "");
+		
+		Learner learner = new Learner("Matt", "Brown", "");
+		
+		System.out.println(cafe.buy(teacher, MenueItem.BREAKFAST));
+	}
 }

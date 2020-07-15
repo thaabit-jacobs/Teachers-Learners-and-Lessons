@@ -40,15 +40,9 @@ public class Learner extends Consumer{
 	}
 	
 	public String attendLesson(Lesson lesson) {
-			if(hasThreeOrMoreSubjects() && registeredForSubject(lesson.getSubject()) && !attendingLesson) {
-				lesson.addLearnerLesson(this);
-				
-				addTokens(3);
-				
-				notes.put(lesson, AquiredType.ATTENDED_LESSON);
-				
+			if(lesson.addLearnerLesson(this)) {					
 				attendingLesson = true;
-				
+					
 				return getFirstName() + " added to lesson";
 			}
 			
@@ -114,7 +108,7 @@ public class Learner extends Consumer{
 		return false;
 	}
 	
-	public String status() {
+	public String endOfDayStatus() {
 		Set<Map.Entry<Lesson, AquiredType>> set = notes.entrySet();
 		String status = "";
 		

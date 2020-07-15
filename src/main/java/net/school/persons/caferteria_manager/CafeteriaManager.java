@@ -51,7 +51,7 @@ public class CafeteriaManager extends Person{
 			
 	}
 	
-	public String status() {
+	public String endOfDayStatus() {
 		Set<Map.Entry<Consumer, ArrayList<MenueItem>>> set = sales.entrySet();
 		String status = "";
 		

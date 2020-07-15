@@ -43,7 +43,7 @@ public class Principal extends Person {
 		return LessonCount;
 	}
 	
-	public String status() {
+	public String endOfDayStatus() {
 		Set<Map.Entry<Subject, Integer>> set = LessonCount.entrySet();
 		String status = "";
 		

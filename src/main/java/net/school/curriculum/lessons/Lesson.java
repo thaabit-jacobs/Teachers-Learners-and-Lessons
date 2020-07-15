@@ -2,7 +2,10 @@ package net.school.curriculum.lessons;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
+import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
 import net.school.persons.learners.Learner;
 import net.school.persons.principal.Principal;
@@ -51,6 +54,10 @@ public class Lesson {
 		return lessonStatus;
 	}
 	
+	public ArrayList<Learner> getLearnerAttending() {
+		return learnersAttending;
+	}
+	
 	public void setLessonStatus(LessonStatus ls) {
 		lessonStatus = ls;
 	}
@@ -61,8 +68,9 @@ public class Lesson {
 	}
 	
 	public boolean addLearnerLesson(Learner learner) {
-		if(learnersAttending.add(learner))
-			return true;
+		if(learner.hasThreeOrMoreSubjects() && learner.registeredForSubject(subject) && !learner.getAttendingLesson()) {
+			return learnersAttending.add(learner);
+		}
 		
 		return false;
 	}
@@ -86,7 +94,6 @@ public class Lesson {
 			return "Lesson has been cancelled";
 		}
 			
-		
 		lessonStatus = LessonStatus.ACTIVE;
 		
 		return "Lesson has been started";
@@ -98,9 +105,35 @@ public class Lesson {
 			
 			setAttendingToFalse();
 			
+			addTokensToLearners();
+			
+			addNotesToLearners();
+			
+			teacher.addTokens(5);
+			
+			teacher.incrementLessonTaught();
+			
 			return "Lesson is finished";
 		}
 		
 		return "Lesson is " + getLessonStatus();
+	}
+	
+	public boolean isQualifiedToTeachSubject() {
+		for(Subject sub: teacher.getQualifiedSubjects())
+			if(sub == this.getSubject())
+				return true;
+		
+		return false;
+	}
+	
+	public void addTokensToLearners() {
+		for(Learner learner:learnersAttending)
+			learner.addTokens(3);
+	}
+	
+	public void addNotesToLearners() {
+		for(Learner learner:learnersAttending) 
+			learner.getNotes().put(this, AquiredType.ATTENDED_LESSON);
 	}
 }
