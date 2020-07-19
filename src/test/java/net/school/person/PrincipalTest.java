@@ -18,13 +18,13 @@ class PrincipalTest {
 	
 	private Lesson math = new Lesson(bill, Subject.MATH, LocalTime.now());
 	
-	@Test
+	//@Test
 	void shouldReturnCancelledLessonCount() {
 		math.start();
 		assertEquals(1, prin.getCancelledLessonCount(math));
 	}
 	
-	@Test
+	//@Test
 	void shouldReturnDailyLessonCount() {
 		assertEquals(1, prin.getDailyLessonCount(math).get(Subject.MATH));
 	}
