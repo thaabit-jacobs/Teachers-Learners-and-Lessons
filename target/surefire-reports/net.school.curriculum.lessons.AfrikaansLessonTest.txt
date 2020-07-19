@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: net.school.curriculum.lessons.AfrikaansLessonTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.002 s <<< FAILURE! - in net.school.curriculum.lessons.AfrikaansLessonTest
-shouldReturnAfrikaansAsSubject  Time elapsed: 0 s  <<< ERROR!
-java.lang.NullPointerException
-	at net.school.curriculum.lessons.AfrikaansLessonTest.shouldReturnAfrikaansAsSubject(AfrikaansLessonTest.java:21)
-

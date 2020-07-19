@@ -2,150 +2,66 @@ package net.school.cafeteria;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalTime;
-
 import org.junit.jupiter.api.Test;
 
 import net.school.cafeteria.menue.MenueItem;
-import net.school.curriculum.lessons.Lesson;
-import net.school.curriculum.lessons.MathLesson;
-import net.school.curriculum.subjects.Subject;
-import net.school.persons.caferteria_manager.CafeteriaManager;
-import net.school.persons.learners.Learner;
-import net.school.persons.principal.Principal;
-import net.school.persons.teachers.Teacher;
+import net.school.person.consumer.CafeteriaManager;
+import net.school.person.consumer.Consumer;
+import net.school.person.consumer.Learner;
+import net.school.person.consumer.Teacher;
 
 class CafeteriaTest {
 	
-	Principal pprn = new Principal("Bill", "Gates", "");
+	private CafeteriaManager bill = new CafeteriaManager("Bill", "March", " ");
 	
-	CafeteriaManager cafeMan = new CafeteriaManager("Thaabit", "Jacobs", "");
-
-	Cafeteria cafe = new Cafeteria(cafeMan);
+	private Cafeteria cafe = new Cafeteria(bill);
 	
-	Teacher teacher = new Teacher("James", "Bald", "");
+	private Consumer con = new Consumer("Jum", "Jones", " ");
 	
-	Learner learner1 = new Learner("Matt", "Brown", "");
-	Learner learner2 = new Learner("Matt", "Brown", "");
-	Learner learner3 = new Learner("Matt", "Brown", "");
-	Learner learner4 = new Learner("Matt", "Brown", "");
-	Learner learner5 = new Learner("Matt", "Brown", "");
+	private Teacher sarah = new Teacher("Sarah", "Marks", " ");
 	
-	Lesson mathLesson = new MathLesson(teacher, LocalTime.now());
+	private Learner kate = new Learner("Kate", "Jen", " ");
 	
 	@Test
-	void shouldReturnNotEnoughTokens() {
-		assertEquals("Not enough tokens", cafe.buy(teacher, MenueItem.BREAKFAST));
+	void shouldRetutnFalseForNtATeacherOrLearner() {
+		assertEquals(false, cafe.isTeacherOrIsLeanrner(con));
 	}
 	
 	@Test
-	void teacherShouldBuyItemAtFulPrice() {
-		teacher.addQualifiedSubject(Subject.MATH);
-		
-		learner1.addSubject(Subject.MATH);
-		learner1.addSubject(Subject.AFRIKAANS);
-		learner1.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner2.addSubject(Subject.MATH);
-		learner2.addSubject(Subject.AFRIKAANS);
-		learner2.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner3.addSubject(Subject.MATH);
-		learner3.addSubject(Subject.AFRIKAANS);
-		learner3.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner4.addSubject(Subject.MATH);
-		learner4.addSubject(Subject.AFRIKAANS);
-		learner4.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner5.addSubject(Subject.MATH);
-		learner5.addSubject(Subject.AFRIKAANS);
-		learner5.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		mathLesson.addLearnerLesson(learner1);
-		mathLesson.addLearnerLesson(learner2);
-		mathLesson.addLearnerLesson(learner3);
-		mathLesson.addLearnerLesson(learner4);
-		mathLesson.addLearnerLesson(learner5);
-		teacher.teach(mathLesson);
-		teacher.endLesson(mathLesson);
-		
-		assertEquals("James bought BREAKFAST for 4 tokens", cafe.buy(teacher, MenueItem.BREAKFAST));
+	void shouldRetutnTrueForTeacherObject() {
+		assertEquals(true, cafe.isTeacherOrIsLeanrner(sarah));
 	}
 	
 	@Test
-	void teacherShouldBuyItemAtDiscountedPriceFulPrice() {
-		teacher.addQualifiedSubject(Subject.MATH);
-		learner1.addSubject(Subject.MATH);
-		learner1.addSubject(Subject.AFRIKAANS);
-		learner1.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner2.addSubject(Subject.MATH);
-		learner2.addSubject(Subject.AFRIKAANS);
-		learner2.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner3.addSubject(Subject.MATH);
-		learner3.addSubject(Subject.AFRIKAANS);
-		learner3.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner4.addSubject(Subject.MATH);
-		learner4.addSubject(Subject.AFRIKAANS);
-		learner4.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner5.addSubject(Subject.MATH);
-		learner5.addSubject(Subject.AFRIKAANS);
-		learner5.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		mathLesson.addLearnerLesson(learner1);
-		mathLesson.addLearnerLesson(learner2);
-		mathLesson.addLearnerLesson(learner3);
-		mathLesson.addLearnerLesson(learner4);
-		mathLesson.addLearnerLesson(learner5);
-		teacher.teach(mathLesson);
-		teacher.endLesson(mathLesson);
-		teacher.teach(mathLesson);
-		teacher.endLesson(mathLesson);
-		teacher.teach(mathLesson);
-		teacher.endLesson(mathLesson);
-		teacher.teach(mathLesson);
-		teacher.endLesson(mathLesson);
-		teacher.teach(mathLesson);
-		teacher.endLesson(mathLesson);
-		assertEquals("James bought BREAKFAST for 3 tokens", cafe.buy(teacher, MenueItem.BREAKFAST));
+	void shouldRetutnTrueForLearnerObj() {
+		assertEquals(true, cafe.isTeacherOrIsLeanrner(kate));
 	}
 	
 	@Test
-	void learnerShouldBuyItemAtFulPrice() {
-		teacher.addQualifiedSubject(Subject.MATH);
-		learner1.addSubject(Subject.MATH);
-		learner1.addSubject(Subject.AFRIKAANS);
-		learner1.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner2.addSubject(Subject.MATH);
-		learner2.addSubject(Subject.AFRIKAANS);
-		learner2.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner3.addSubject(Subject.MATH);
-		learner3.addSubject(Subject.AFRIKAANS);
-		learner3.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner4.addSubject(Subject.MATH);
-		learner4.addSubject(Subject.AFRIKAANS);
-		learner4.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		learner5.addSubject(Subject.MATH);
-		learner5.addSubject(Subject.AFRIKAANS);
-		learner5.addSubject(Subject.BUSSINESS_STUDIES);
-		
-		mathLesson.addLearnerLesson(learner1);
-		mathLesson.addLearnerLesson(learner2);
-		mathLesson.addLearnerLesson(learner3);
-		mathLesson.addLearnerLesson(learner4);
-		mathLesson.addLearnerLesson(learner5);
-		teacher.teach(mathLesson);
-		teacher.endLesson(mathLesson);
-		
-		assertEquals("Matt bought DRINK for 2 tokens", cafe.buy(learner1, MenueItem.DRINK));
+	void shouldRetutnOnlyTeachersAndLearnersCanPurchase() {
+		assertEquals("Only teachers or learners can make purchases", cafe.buy(con, MenueItem.DRINK));
+	}
+	
+	@Test
+	void shouldRetutnNotEnoughTokensForTeacherWithIsufficentTokens() {
+		assertEquals("Not enough tokens", cafe.buy(sarah, MenueItem.DRINK));
+	}
+	
+	@Test
+	void shouldRetutnNotEnoughTokensForLearnerWithIsufficentTokens() {
+		assertEquals("Not enough tokens", cafe.buy(kate, MenueItem.DRINK));
+	}
+	
+	@Test
+	void shouldRetutnNameBoughtForTeacher() {
+		sarah.addTokens(5);
+		assertEquals("Sarah bought DRINK", cafe.buy(sarah, MenueItem.DRINK));
+	}
+	
+	@Test
+	void shouldRetutnNameBoughtForLearner() {
+		kate.addTokens(5);
+		assertEquals("Kate bought DRINK", cafe.buy(kate, MenueItem.DRINK));
 	}
 
 }

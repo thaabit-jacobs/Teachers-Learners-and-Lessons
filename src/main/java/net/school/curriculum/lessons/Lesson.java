@@ -2,48 +2,54 @@ package net.school.curriculum.lessons;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+import java.util.HashMap;
 
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
-import net.school.persons.learners.Learner;
-import net.school.persons.principal.Principal;
-import net.school.persons.teachers.Teacher;
+import net.school.person.Principal;
+import net.school.person.consumer.Learner;
+import net.school.person.consumer.Teacher;
 
 public class Lesson {
 	
-	private Teacher teacher;
+	private static int cancelledLessonCount;
 	
-	private LocalTime time;
+	private static HashMap<Subject, Integer> dailyLessons = new HashMap<>();
+	
+	private Teacher teacher;
 	
 	private Subject subject;
 	
-	private LessonStatus lessonStatus;
+	private LocalTime time;
 	
-	private ArrayList<Learner> learnersAttending;
+	private LessonStatus status;
 	
-	public Lesson(Teacher teacher, LocalTime time, Subject subject) {
-		
+	private ArrayList<Learner> learnersAttendingLesson;
+	
+	public Lesson(Teacher teacher, Subject subject, LocalTime time) {
 		this.teacher = teacher;
-		
-		this.time = time;
 		
 		this.subject = subject;
 		
-		this.learnersAttending = new ArrayList<> ();
+		this.time = time;
 		
-		this.lessonStatus = LessonStatus.PENDING;
+		status = LessonStatus.PENDING;
 		
-		Principal.incrementLessonCount(this);
+		learnersAttendingLesson = new ArrayList<>();
+		
+		incrementDailyLessonCount();
+	}
+	
+	public int getCancelledLessonCount(Principal prin) {
+		return cancelledLessonCount;
+	}
+	
+	public HashMap<Subject, Integer> getDailyLessonCount(Principal prin) {
+		return dailyLessons;
 	}
 	
 	public Teacher getTeacher() {
 		return teacher;
-	}
-	
-	public LocalTime getTime() {
-		return time;
 	}
 	
 	public Subject getSubject() {
@@ -51,89 +57,94 @@ public class Lesson {
 	}
 	
 	public LessonStatus getLessonStatus() {
-		return lessonStatus;
+		return status;
 	}
 	
-	public ArrayList<Learner> getLearnerAttending() {
-		return learnersAttending;
+	public ArrayList<Learner> getLearnersAttendingLesson(){
+		return learnersAttendingLesson;
 	}
 	
-	public void setLessonStatus(LessonStatus ls) {
-		lessonStatus = ls;
-	}
-	
-	public void setAttendingToFalse() {
-		for(Learner l: learnersAttending) 
-			l.setAttendingLesson(false);
-	}
-	
-	public boolean addLearnerLesson(Learner learner) {
-		if(learner.hasThreeOrMoreSubjects() && learner.registeredForSubject(subject) && !learner.getAttendingLesson()) {
-			return learnersAttending.add(learner);
+	public boolean attendLesson(Learner learner) {
+		if(learner.isSubjectRegsitered(subject) && learner.isRegisteredForThreeOrMoreSubjects() && !learner.getIsAttendingLesson() && status == LessonStatus.PENDING) {
+			learner.setIsAttendLesson(true);
+			return learnersAttendingLesson.add(learner);
 		}
-		
+			
 		return false;
 	}
 	
-	public boolean isCancelled() {
-		if(learnersAttending.size() < 5) {
-			lessonStatus = LessonStatus.CANCELLED;
-			
+	public boolean isLessonCancelled() {
+		if(learnersAttendingLesson.size() < 5) {
+			this.status = LessonStatus.CANCELLED;
+			cancelledLessonCount++;
+			setAttendingToFalse();
 			return true;
 		}
-			
+		
 		return false;
 	}
 	
 	public String start() {
-		if(isCancelled()) {
-			setAttendingToFalse();
-			
-			Principal.incrementCancelledLessonCount();
-			
-			return "Lesson has been cancelled";
+		if(!isLessonCancelled() && status == LessonStatus.PENDING) {
+			this.status = LessonStatus.ACTIVE;
+			return "Lesson has started";
 		}
-			
-		lessonStatus = LessonStatus.ACTIVE;
 		
-		return "Lesson has been started";
+		return "Lesson has not been started";
 	}
 	
 	public String end() {
-		if(lessonStatus == LessonStatus.ACTIVE) {
-			lessonStatus = LessonStatus.COMPLETED;
-			
-			setAttendingToFalse();
-			
-			addTokensToLearners();
-			
-			addNotesToLearners();
-			
-			teacher.addTokens(5);
-			
-			teacher.incrementLessonTaught();
-			
-			return "Lesson is finished";
+		if(status == LessonStatus.ACTIVE) {
+			this.status = LessonStatus.COMPLETED;
+			return "Lesson has completed";
 		}
 		
-		return "Lesson is " + getLessonStatus();
+		return "Lesson has not been completed";
+			
 	}
 	
-	public boolean isQualifiedToTeachSubject() {
-		for(Subject sub: teacher.getQualifiedSubjects())
-			if(sub == this.getSubject())
-				return true;
+	public String teachLesson() {
+		if(teacher.isSubjectRegsitered(subject))
+			return start();
 		
-		return false;
+		return "Teacher is not qualified to teach " + subject.toString();
+	}
+	
+	public String endLesson() {
+		end();
+		
+		if(status == LessonStatus.COMPLETED) {
+			addTokensToLearners();
+			addNotesToLearners();
+			setAttendingToFalse();
+			teacher.addTokens(5);
+			
+			return "Lesson has completed";
+		}
+			
+		return "Lesson has not been started";
 	}
 	
 	public void addTokensToLearners() {
-		for(Learner learner:learnersAttending)
+		for(Learner learner:learnersAttendingLesson)
 			learner.addTokens(3);
 	}
 	
 	public void addNotesToLearners() {
-		for(Learner learner:learnersAttending) 
-			learner.getNotes().put(this, AquiredType.ATTENDED_LESSON);
+		for(Learner learner:learnersAttendingLesson) 
+			learner.getNotes().put(subject, AquiredType.ATTENDED_LESSON);
+	}
+	
+	public void setAttendingToFalse() {
+		for(Learner l: learnersAttendingLesson) 
+			l.setIsAttendLesson(false);
+	}
+	
+	public void incrementDailyLessonCount() {
+		if(dailyLessons.containsKey(subject)) {
+			int currentLessonCount = dailyLessons.get(subject);
+			dailyLessons.put(subject, currentLessonCount + 1);
+		} else 
+			dailyLessons.put(subject, 1);
 	}
 }

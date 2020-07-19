@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class MenueItemTest {
 
 	@Test
-	void shouldReturnTheCostOfTheMenueItem() {
+	void shouldGetTheCostOfMenueitem() {
 		assertEquals(6, MenueItem.LUNCH.getCost());
 	}
 
