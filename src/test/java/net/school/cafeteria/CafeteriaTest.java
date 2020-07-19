@@ -16,7 +16,7 @@ class CafeteriaTest {
 	
 	private Cafeteria cafe = new Cafeteria(bill);
 	
-	private Consumer con = new Consumer("Jum", "Jones", " ");
+	private Consumer con = new Consumer("Juum", "Jones", " ");
 	
 	private Teacher sarah = new Teacher("Sarah", "Marks", " ");
 	
