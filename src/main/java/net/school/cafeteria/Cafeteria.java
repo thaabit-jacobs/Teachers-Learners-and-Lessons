@@ -19,39 +19,38 @@ public class Cafeteria {
 			if(con instanceof Teacher) {
 				Teacher teach = (Teacher)con;
 				
-				if(teach.qualiesfyForDiscount()) {
-					if(teach.hasEnoughTokens(mi.getCost())) {
-						teach.deductTokens(teach.discountedPrice(mi.getCost()));
-						cafeManager.addTokens(teach.discountedPrice(mi.getCost()));
-						cafeManager.newSale(teach, mi);
-						return teach.getFirstName() + " bought " + mi.toString();
-					} else
-						return "Not enough tokens";
-					
-				} else {
-					if(teach.hasEnoughTokens(mi.getCost())) {
-						teach.deductTokens(mi.getCost());
-						cafeManager.addTokens(mi.getCost());
-						cafeManager.newSale(teach, mi);
-						return teach.getFirstName() + " bought " + mi.toString();
-					} else
-						return "Not enough tokens";
-				}
+				if(teach.qualiesfyForDiscount())
+					return peformTransactionDiscount(teach, mi);
+				else 
+					return peformTransaction(teach, mi);
 				
 			} else {
 				Learner learn = (Learner)con;
-				
-				if(learn.hasEnoughTokens(mi.getCost())) {
-					learn.deductTokens(mi.getCost());
-					cafeManager.addTokens(mi.getCost());
-					cafeManager.newSale(learn, mi);
-					return learn.getFirstName() + " bought " + mi.toString();
-				} else
-					return "Not enough tokens";
-			}
+				return peformTransaction(learn, mi);
 		}
+	}
 		
 		return "Only teachers or learners can make purchases";
+	}
+	
+	public String peformTransaction(Consumer con, MenueItem mi) {
+		if(con.hasEnoughTokens(mi.getCost())) {
+			con.deductTokens(mi.getCost());
+			cafeManager.addTokens(mi.getCost());
+			cafeManager.newSale(con, mi);
+			return con.getFirstName() + " bought " + mi.toString();
+		} else
+			return "Not enough tokens";
+	}
+	
+	public String peformTransactionDiscount(Teacher teach, MenueItem mi) {
+		if(teach.hasEnoughTokens(mi.getCost())) {
+			teach.deductTokens(teach.discountedPrice(mi.getCost()));
+			cafeManager.addTokens(teach.discountedPrice(mi.getCost()));
+			cafeManager.newSale(teach, mi);
+			return teach.getFirstName() + " bought " + mi.toString();
+		} else
+			return "Not enough tokens";
 	}
 	
 	public boolean isTeacherOrIsLeanrner(Consumer con) {
