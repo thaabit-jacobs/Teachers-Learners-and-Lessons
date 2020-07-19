@@ -59,25 +59,24 @@ public class Learner extends Consumer {
 	}
 	
 	public String askNotes(Learner learner, Subject subject) {
-		if(learnerHasLessonNotes(learner, subject)) 
+		if(learnerHasLessonNotes(learner, subject)) {
 			if(this.isSubjectRegsitered(subject)) 
-				if(this.hasEnoughTokens(2)) {
-					this.deductTokens(2);
-					this.addNewLessonNotes(subject, AquiredType.BOUGHT);
-					return "Bought lesson notes";
-				} else
-					return "Not enough tokens";
-				
-			else {
-				if(this.hasEnoughTokens(5)) {
-					this.deductTokens(5);
-					this.addNewLessonNotes(subject, AquiredType.BOUGHT);
-					return "Bought lesson notes";
-				} else
-					return "Not enough tokens";
-			}
+				return performTransaction(2, subject);
+			else
+				return performTransaction(5, subject);
+		}
 	
 		return "Learner does not have lesson notes";
+	}
+	
+	public String performTransaction(int amount, Subject subject) {
+		if(this.hasEnoughTokens(amount)) {
+			this.deductTokens(amount);
+			this.addNewLessonNotes(subject, AquiredType.BOUGHT);
+			return "Bought lesson notes";
+		}
+		
+		return "Not enough tokens";
 	}
 	
 	public void setIsAttendLesson(boolean isAttending) {
