@@ -19,42 +19,31 @@ public class Cafeteria {
 			if(con instanceof Teacher) {
 				Teacher teach = (Teacher)con;
 				if(teach.qualiesfyForDiscount())
-					return peformTransactionDiscount(teach, mi);
+					return peformTransaction(teach, mi, teach.discountedPrice(mi.getCost()));
 				else 
-					return peformTransaction(teach, mi);
-				
+					return peformTransaction(teach, mi, mi.getCost());
 			} else {
-				Learner learn = (Learner)con;
-				return peformTransaction(learn, mi);
+				return peformTransaction(con, mi, mi.getCost());
 		}
 	}
 		
 		return "Only teachers or learners can make purchases";
 	}
 	
-	public String peformTransaction(Consumer con, MenueItem mi) {
-		if(con.hasEnoughTokens(mi.getCost())) {
-			con.deductTokens(mi.getCost());
-			updateCafeteriaManagerTokensAndSales(mi.getCost(), mi, con);
+	protected String peformTransaction(Consumer con, MenueItem mi, int amount) {
+		if(con.hasEnoughTokens(amount)) {
+			con.deductTokens(amount);
+			updateCafeteriaManagerTokensAndSales(amount, mi, con);
 			return con.getFirstName() + " bought " + mi.toString();
 		} else
 			return "Not enough tokens";
 	}
 	
-	public String peformTransactionDiscount(Teacher teach, MenueItem mi) {
-		if(teach.hasEnoughTokens(mi.getCost())) {
-			teach.deductTokens(teach.discountedPrice(mi.getCost()));
-			updateCafeteriaManagerTokensAndSales(teach.discountedPrice(mi.getCost()), mi, teach);
-			return teach.getFirstName() + " bought " + mi.toString();
-		} else
-			return "Not enough tokens";
+	protected boolean isTeacherOrIsLeanrner(Consumer con) {
+		return con instanceof Teacher || con instanceof Learner;
 	}
 	
-	public boolean isTeacherOrIsLeanrner(Consumer con) {
-		return con instanceof Teacher || con instanceof Learner ? true:false;
-	}
-	
-	public void updateCafeteriaManagerTokensAndSales(int amount, MenueItem mi, Consumer con) {
+	protected void updateCafeteriaManagerTokensAndSales(int amount, MenueItem mi, Consumer con) {
 		cafeManager.addTokens(amount);
 		cafeManager.newSale(con, mi);
 	}

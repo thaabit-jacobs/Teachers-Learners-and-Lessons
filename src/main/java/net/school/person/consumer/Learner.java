@@ -3,7 +3,6 @@ package net.school.person.consumer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-//import net.school.curriculum.lessons.Lesson;
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
 
@@ -43,19 +42,19 @@ public class Learner extends Consumer {
 		if(isSubjectRegsitered(subject))
 			return false;
 		
-		return registeredSubjects.add(subject);
+		return getRegisteredSubjects().add(subject);
 	}
 	
-	public boolean isSubjectRegsitered(Subject subject){
-		for(Subject sub: registeredSubjects)
+	protected boolean isSubjectRegsitered(Subject subject){
+		for(Subject sub: getRegisteredSubjects())
 			if(sub == subject)
 				return true;
 		
 		return false;
 	}
 	
-	public boolean isRegisteredForThreeOrMoreSubjects() {
-		return registeredSubjects.size() >= 3;
+	protected boolean isRegisteredForThreeOrMoreSubjects() {
+		return getRegisteredSubjects().size() >= 3;
 	}
 	
 	public boolean learnerHasLessonNotes(Learner learner, Subject subject) {
@@ -73,7 +72,7 @@ public class Learner extends Consumer {
 		return "Learner does not have lesson notes";
 	}
 	
-	public String performTransaction(int amount, Subject subject) {
+	protected String performTransaction(int amount, Subject subject) {
 		if(this.hasEnoughTokens(amount)) {
 			updateLearnerTokensAndLessonNotes(amount, subject);
 			return "Bought lesson notes";
@@ -95,7 +94,7 @@ public class Learner extends Consumer {
 		System.out.println("Tokens :" + this.getTokens());
 	}
 	
-	public void updateLearnerTokensAndLessonNotes(int amount, Subject subject) {
+	protected void updateLearnerTokensAndLessonNotes(int amount, Subject subject) {
 		this.deductTokens(amount);
 		this.addNewLessonNotes(subject, AquiredType.BOUGHT);
 	}

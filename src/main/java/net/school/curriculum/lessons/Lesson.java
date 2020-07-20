@@ -73,7 +73,7 @@ public class Lesson {
 		return false;
 	}
 	
-	public boolean isLessonCancelled() {
+	protected boolean isLessonCancelled() {
 		if(learnersAttendingLesson.size() < 5) {
 			this.status = LessonStatus.CANCELLED;
 			incrementCancelledLessonCount();
@@ -84,23 +84,22 @@ public class Lesson {
 		return false;
 	}
 	
-	public String start() {
+	protected String start() {
 		if(!isLessonCancelled() && status == LessonStatus.PENDING) {
 			this.status = LessonStatus.ACTIVE;
 			return "Lesson has started";
 		}
 		
-		return "Lesson has not been started";
+		return "Lesson is " + status.toString().toLowerCase();
 	}
 	
-	public String end() {
+	protected String end() {
 		if(status == LessonStatus.ACTIVE) {
 			this.status = LessonStatus.COMPLETED;
 			return "Lesson has completed";
 		}
 		
-		return "Lesson has not been completed";
-			
+		return "Lesson is " + status.toString().toLowerCase();
 	}
 	
 	public String teachLesson() {
@@ -111,34 +110,33 @@ public class Lesson {
 	}
 	
 	public String endLesson() {
-		end();
+		String endMsg = end();
 		
 		if(status == LessonStatus.COMPLETED) {
 			updateLearnersAttendingInfo();
 			teacher.addTokens(5);
-			
 			return "Lesson has completed";
 		}
 			
-		return "Lesson has not been started";
+		return endMsg;
 	}
 	
-	public void addTokensToLearners() {
+	protected void addTokensToLearners() {
 		for(Learner learner:learnersAttendingLesson)
 			learner.addTokens(3);
 	}
 	
-	public void addNotesToLearners() {
+	protected void addNotesToLearners() {
 		for(Learner learner:learnersAttendingLesson) 
 			learner.getNotes().put(subject, AquiredType.ATTENDED_LESSON);
 	}
 	
-	public void setAttendingToFalse() {
+	protected void setAttendingToFalse() {
 		for(Learner l: learnersAttendingLesson) 
 			l.setIsAttendLesson(false);
 	}
 	
-	public void incrementDailyLessonCount() {
+	protected void incrementDailyLessonCount() {
 		if(dailyLessons.containsKey(subject)) {
 			int currentLessonCount = dailyLessons.get(subject);
 			dailyLessons.put(subject, currentLessonCount + 1);
@@ -146,11 +144,11 @@ public class Lesson {
 			dailyLessons.put(subject, 1);
 	}
 	
-	public void incrementCancelledLessonCount() {
+	protected void incrementCancelledLessonCount() {
 		cancelledLessonCount++;
 	}
 	
-	public void updateLearnersAttendingInfo() {
+	protected void updateLearnersAttendingInfo() {
 		addTokensToLearners();
 		addNotesToLearners();
 		setAttendingToFalse();

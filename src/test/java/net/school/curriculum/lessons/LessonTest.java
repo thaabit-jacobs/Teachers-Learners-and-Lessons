@@ -77,7 +77,7 @@ class LessonTest {
 	
 	@Test
 	void shouldReturnLessonNotStartedWhenStartingCancelledLessonAndStatusIsNotPending() {
-		assertEquals("Lesson has not been started", math.start());
+		assertEquals("Lesson is cancelled", math.start());
 	}
 	
 	@Test
@@ -113,7 +113,7 @@ class LessonTest {
 	
 	@Test
 	void shouldReturnLessonCouldNotBeCompletedWhenStatusIsNotActive() {
-		assertEquals("Lesson has not been completed", math.end());
+		assertEquals("Lesson is pending", math.end());
 	}
 	
 	@Test

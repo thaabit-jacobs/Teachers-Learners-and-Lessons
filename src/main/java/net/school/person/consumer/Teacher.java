@@ -36,7 +36,7 @@ public class Teacher extends Consumer{
 	}
 	
 	public boolean qualiesfyForDiscount() {
-		return teacherLessonCount >= 5 ? true:false;
+		return teacherLessonCount >= 5;
 	}
 	
 	public int discountedPrice(int price) {

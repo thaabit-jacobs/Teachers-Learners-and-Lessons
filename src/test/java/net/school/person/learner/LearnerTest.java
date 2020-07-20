@@ -2,16 +2,37 @@ package net.school.person.learner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
 import net.school.person.consumer.Learner;
 
-class LearnerTest {
+class LearnerTwo extends Learner{
 	
-	private Learner learner = new Learner("John", "Jones", "jones@gmail.com");
-	private Learner learner2 = new Learner("Mikey", "James", "mickey@gmail.com");
+	public LearnerTwo(String firstName, String lastName, String email) {
+		super(firstName, lastName, email);
+	}
+	
+	public boolean isSubjectRegsitered(Subject subject){
+		for(Subject sub: getRegisteredSubjects())
+			if(sub == subject)
+				return true;
+		
+		return false;
+	}
+	
+	public boolean isRegisteredForThreeOrMoreSubjects() {
+		return getRegisteredSubjects().size() >= 3;
+	}
+}
+
+class LearnerTest{
+
+	private LearnerTwo learner = new LearnerTwo("John", "Jones", "jones@gmail.com");
+	private LearnerTwo learner2 = new LearnerTwo("Mikey", "James", "mickey@gmail.com");
 	
 	@Test
 	void shouldReturnFalseForSubjectNotInList() {
