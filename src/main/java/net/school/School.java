@@ -20,7 +20,7 @@ public class School {
 	private ArrayList<Learner> learners = new ArrayList<>();
 	private ArrayList<Lesson> lessons = new ArrayList<>();
 	
-	public School() {/*
+	public School() {
 		teachers.add( new Teacher("Linda", "Carl", ""));
 		teachers.add( new Teacher("Nkosi", "Jones", ""));
 		teachers.add( new Teacher("Bill", "James", ""));
@@ -69,7 +69,7 @@ public class School {
 		
 		learners.get(4).registerNewSubject(Subject.MATH);
 		learners.get(4).registerNewSubject(Subject.ENGLISH);
-		learners.get(4).registerNewSubject(Subject.AFRIKAANS); */
+		learners.get(4).registerNewSubject(Subject.AFRIKAANS); 
 	}
 	
 	protected ArrayList<Teacher> getTeacher(){
