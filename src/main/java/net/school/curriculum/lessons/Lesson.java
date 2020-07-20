@@ -76,7 +76,7 @@ public class Lesson {
 	public boolean isLessonCancelled() {
 		if(learnersAttendingLesson.size() < 5) {
 			this.status = LessonStatus.CANCELLED;
-			cancelledLessonCount++;
+			incrementCancelledLessonCount();
 			setAttendingToFalse();
 			return true;
 		}
@@ -114,9 +114,7 @@ public class Lesson {
 		end();
 		
 		if(status == LessonStatus.COMPLETED) {
-			addTokensToLearners();
-			addNotesToLearners();
-			setAttendingToFalse();
+			updateLearnersAttendingInfo();
 			teacher.addTokens(5);
 			
 			return "Lesson has completed";
@@ -147,4 +145,15 @@ public class Lesson {
 		} else 
 			dailyLessons.put(subject, 1);
 	}
+	
+	public void incrementCancelledLessonCount() {
+		cancelledLessonCount++;
+	}
+	
+	public void updateLearnersAttendingInfo() {
+		addTokensToLearners();
+		addNotesToLearners();
+		setAttendingToFalse();
+	}
+	
 }

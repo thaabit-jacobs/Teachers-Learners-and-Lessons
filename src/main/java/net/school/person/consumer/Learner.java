@@ -71,8 +71,7 @@ public class Learner extends Consumer {
 	
 	public String performTransaction(int amount, Subject subject) {
 		if(this.hasEnoughTokens(amount)) {
-			this.deductTokens(amount);
-			this.addNewLessonNotes(subject, AquiredType.BOUGHT);
+			updateLearnerTokensAndLessonNotes(amount, subject);
 			return "Bought lesson notes";
 		}
 		
@@ -90,5 +89,10 @@ public class Learner extends Consumer {
 	public void endOfDayStatus() {
 		notes.forEach((subject, type) -> System.out.println(subject + ":" + type));
 		System.out.println("Tokens :" + this.getTokens());
+	}
+	
+	public void updateLearnerTokensAndLessonNotes(int amount, Subject subject) {
+		this.deductTokens(amount);
+		this.addNewLessonNotes(subject, AquiredType.BOUGHT);
 	}
 }

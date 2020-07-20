@@ -18,7 +18,6 @@ public class Cafeteria {
 		if(isTeacherOrIsLeanrner(con)) {
 			if(con instanceof Teacher) {
 				Teacher teach = (Teacher)con;
-				
 				if(teach.qualiesfyForDiscount())
 					return peformTransactionDiscount(teach, mi);
 				else 
@@ -36,8 +35,7 @@ public class Cafeteria {
 	public String peformTransaction(Consumer con, MenueItem mi) {
 		if(con.hasEnoughTokens(mi.getCost())) {
 			con.deductTokens(mi.getCost());
-			cafeManager.addTokens(mi.getCost());
-			cafeManager.newSale(con, mi);
+			updateCafeteriaManagerTokensAndSales(mi.getCost(), mi, con);
 			return con.getFirstName() + " bought " + mi.toString();
 		} else
 			return "Not enough tokens";
@@ -46,8 +44,7 @@ public class Cafeteria {
 	public String peformTransactionDiscount(Teacher teach, MenueItem mi) {
 		if(teach.hasEnoughTokens(mi.getCost())) {
 			teach.deductTokens(teach.discountedPrice(mi.getCost()));
-			cafeManager.addTokens(teach.discountedPrice(mi.getCost()));
-			cafeManager.newSale(teach, mi);
+			updateCafeteriaManagerTokensAndSales(teach.discountedPrice(mi.getCost()), mi, teach);
 			return teach.getFirstName() + " bought " + mi.toString();
 		} else
 			return "Not enough tokens";
@@ -55,5 +52,10 @@ public class Cafeteria {
 	
 	public boolean isTeacherOrIsLeanrner(Consumer con) {
 		return con instanceof Teacher || con instanceof Learner ? true:false;
+	}
+	
+	public void updateCafeteriaManagerTokensAndSales(int amount, MenueItem mi, Consumer con) {
+		cafeManager.addTokens(amount);
+		cafeManager.newSale(con, mi);
 	}
 }
