@@ -36,7 +36,7 @@ public class Learner extends Consumer {
 	}
 	
 	public boolean canAttendLesson(Subject subject) {
-		return isSubjectRegsitered(subject) && isRegisteredForThreeOrMoreSubjects() && !getIsAttendingLesson()? true:false;
+		return isSubjectRegsitered(subject) && isRegisteredForThreeOrMoreSubjects() && !getIsAttendingLesson();
 	}
 	
 	public boolean registerNewSubject(Subject subject) {
@@ -55,11 +55,11 @@ public class Learner extends Consumer {
 	}
 	
 	public boolean isRegisteredForThreeOrMoreSubjects() {
-		return registeredSubjects.size() >= 3 ? true:false;
+		return registeredSubjects.size() >= 3;
 	}
 	
 	public boolean learnerHasLessonNotes(Learner learner, Subject subject) {
-		return learner.getNotes().get(subject)  != null ? true:false;
+		return learner.getNotes().get(subject)  != null;
 	}
 	
 	public String askNotes(Learner learner, Subject subject) {
