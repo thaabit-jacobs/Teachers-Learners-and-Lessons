@@ -20,7 +20,7 @@ public class School {
 	private ArrayList<Learner> learners = new ArrayList<>();
 	private ArrayList<Lesson> lessons = new ArrayList<>();
 	
-	public School() {
+	public School() {/*
 		teachers.add( new Teacher("Linda", "Carl", ""));
 		teachers.add( new Teacher("Nkosi", "Jones", ""));
 		teachers.add( new Teacher("Bill", "James", ""));
@@ -69,34 +69,34 @@ public class School {
 		
 		learners.get(4).registerNewSubject(Subject.MATH);
 		learners.get(4).registerNewSubject(Subject.ENGLISH);
-		learners.get(4).registerNewSubject(Subject.AFRIKAANS);
+		learners.get(4).registerNewSubject(Subject.AFRIKAANS); */
 	}
 	
-	public ArrayList<Teacher> getTeacher(){
+	protected ArrayList<Teacher> getTeacher(){
 		return teachers;
 	}
 	
-	public ArrayList<Learner> getLearner(){
+	protected ArrayList<Learner> getLearner(){
 		return learners;
 	}
 	
-	public ArrayList<Lesson> getLesson(){
+	protected ArrayList<Lesson> getLesson(){
 		return lessons;
 	}
 	
-	public Principal getPrincipal() {
+	protected Principal getPrincipal() {
 		return principal;
 	} 
 	
-	public CafeteriaManager getCafeteriaManager() {
+	protected CafeteriaManager getCafeteriaManager() {
 		return cafeMan;
 	}
 	
-	public Cafeteria getCafeteria() {
+	protected Cafeteria getCafeteria() {
 		return cafe;
 	}
 	
-	public Lesson getLesson(Subject subject, String teachersName) {
+	protected Lesson getLesson(Subject subject, String teachersName) {
 		for(Lesson les: lessons)
 			if(les.getSubject() == subject && les.getTeacher().getFirstName().equalsIgnoreCase(teachersName))
 				return les;
@@ -104,7 +104,7 @@ public class School {
 		return null;
 	}
 	
-	public Teacher getTeacher(String name) {
+	protected Teacher getTeacher(String name) {
 		for(Teacher teach: teachers)
 			if(teach.getFirstName().equalsIgnoreCase(name))
 				return teach;
@@ -112,7 +112,7 @@ public class School {
 		return null;
 	}
 	
-	public Learner getLearner(String name) {
+	protected Learner getLearner(String name) {
 		for(Learner learn: learners)
 			if(learn.getFirstName().equalsIgnoreCase(name))
 				return learn;
