@@ -35,6 +35,10 @@ public class Learner extends Consumer {
 		return registeredSubjects;
 	}
 	
+	public boolean canAttendLesson(Subject subject) {
+		return isSubjectRegsitered(subject) && isRegisteredForThreeOrMoreSubjects() && !getIsAttendingLesson()? true:false;
+	}
+	
 	public boolean registerNewSubject(Subject subject) {
 		if(isSubjectRegsitered(subject))
 			return false;

@@ -65,7 +65,7 @@ public class Lesson {
 	}
 	
 	public boolean attendLesson(Learner learner) {
-		if(learner.isSubjectRegsitered(subject) && learner.isRegisteredForThreeOrMoreSubjects() && !learner.getIsAttendingLesson() && status == LessonStatus.PENDING) {
+		if(learner.canAttendLesson(subject)) {
 			learner.setIsAttendLesson(true);
 			return learnersAttendingLesson.add(learner);
 		}
