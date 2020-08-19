@@ -1,0 +1,9 @@
+insert into learner (first_name, last_name, email, tokens) values('Thaabit', 'jacobs', 'thaabitj@gmail.com', 0);
+insert into learner (first_name, last_name, email, tokens) values('Mike', 'Davids', 'miked@gmail.com', 0);
+insert into learner (first_name, last_name, email, tokens) values('Sbu', 'Diction', 'sbud@gmail.com', 0);
+insert into learner (first_name, last_name, email, tokens) values('Aypha', 'Mihlayli', 'ayapham@gmail.com', 0);
+insert into learner (first_name, last_name, email, tokens) values('Jason', 'Taratino', 'jasont@gmail.com', 0);
+insert into learner (first_name, last_name, email, tokens) values('Amanda', 'Mishy', 'amandam@gmail.com', 0);
+insert into learner (first_name, last_name, email, tokens) values('Theo', 'Von', 'theov@gmail.com', 0);
+insert into learner (first_name, last_name, email, tokens) values('Dani', 'Kay', 'danik@gmail.com', 0);
+insert into learner (first_name, last_name, email, tokens) values('Sinawu', 'Guy', 'sinawug@gmail.com', 0);

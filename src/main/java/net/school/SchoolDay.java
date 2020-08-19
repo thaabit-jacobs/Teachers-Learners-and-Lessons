@@ -29,7 +29,6 @@ public class SchoolDay {
 		System.out.println(sch.teachers.get(1).endLesson(sch.lessons.get(1)));
 		System.out.print("\n");
 		
-		System.out.print("\n");
 		//Life Science class
 		System.out.println("Life Science lesson");
 		System.out.println(sch.learners.get(0).attendLesson(sch.lessons.get(4)));
@@ -48,9 +47,9 @@ public class SchoolDay {
 		System.out.println(sch.cafe.buy(sch.learners.get(1), MenueItem.AFTERNOON_SNACK));
 		System.out.println(sch.cafe.buy(sch.learners.get(1), MenueItem.DRINK));
 		System.out.println(sch.cafe.buy(sch.teachers.get(2), MenueItem.DRINK));
+		System.out.print("\n");
 		
 		//Math lesson
-		System.out.print("\n");
 		System.out.println("Math lesson");
 		System.out.println(sch.learners.get(0).attendLesson(sch.lessons.get(0)));
 		System.out.println(sch.learners.get(1).attendLesson(sch.lessons.get(0)));
@@ -62,7 +61,6 @@ public class SchoolDay {
 		System.out.print("\n");
 		
 		//Afrkiaans lesson
-		System.out.print("\n");
 		System.out.println("Afrikaans lesson");
 		System.out.println(sch.learners.get(0).attendLesson(sch.lessons.get(2)));
 		System.out.println(sch.learners.get(1).attendLesson(sch.lessons.get(2)));
@@ -83,12 +81,10 @@ public class SchoolDay {
 		
 		//Learner end of day
 		System.out.println(sch.learners.get(2).endOfDayStatus());
-		
 		System.out.print("\n");
 		
 		////principal end of day
 		System.out.println(sch.principal.endOfDayStatus());
-		
 		System.out.print("\n");
 		
 		//caferteria manager end of day

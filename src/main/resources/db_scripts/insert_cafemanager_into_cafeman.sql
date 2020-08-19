@@ -1,0 +1,1 @@
+insert into cafeman(first_name, last_name, email, total_tokens) values('Janice', 'Beutrice', 'janiceb@gmail.com', 0);

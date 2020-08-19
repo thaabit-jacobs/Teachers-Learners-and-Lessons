@@ -2,8 +2,6 @@ package net.school.curriculum.lessons;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;

@@ -23,9 +23,9 @@ public class School {
 
 	Cafeteria cafe = new Cafeteria(cafeMan);
 	
-	ArrayList<Teacher> teachers = new ArrayList();
-	ArrayList<Learner> learners = new ArrayList();
-	ArrayList<Lesson> lessons = new ArrayList();
+	ArrayList<Teacher> teachers = new ArrayList<>();
+	ArrayList<Learner> learners = new ArrayList<>();
+	ArrayList<Lesson> lessons = new ArrayList<>();
 	
 	public School() {
 		teachers.add( new Teacher("Linda", "Carl", ""));
@@ -41,7 +41,7 @@ public class School {
 		
 		lessons.add( new MathLesson(teachers.get(0), LocalTime.of(10, 30)));
 		lessons.add( new EnglishLesson(teachers.get(1), LocalTime.of(11, 45)));
-		lessons.add( new AfrikaansLesson(teachers.get(2), LocalTime.of(12, 00)));
+		lessons.add( new AfrikaansLesson(teachers.get(0), LocalTime.of(12, 00)));
 		lessons.add( new MathLesson(teachers.get(1), LocalTime.of(1, 30)));
 		lessons.add( new LifeSciencesLesson(teachers.get(2), LocalTime.of(2, 45)));
 		
