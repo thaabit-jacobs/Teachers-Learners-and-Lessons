@@ -1,69 +1,50 @@
 package net.school.cafeteria;
 
 import net.school.cafeteria.menue.MenueItem;
-import net.school.persons.caferteria_manager.CafeteriaManager;
-import net.school.persons.learners.Learner;
-import net.school.persons.teachers.Teacher;
+import net.school.person.consumer.CafeteriaManager;
+import net.school.person.consumer.Consumer;
+import net.school.person.consumer.Learner;
+import net.school.person.consumer.Teacher;
 
 public class Cafeteria {
 	
 	private CafeteriaManager cafeManager;
 	
 	public Cafeteria(CafeteriaManager cafeManager) {
-		
 		this.cafeManager = cafeManager;
-		
 	}
 	
-	public String buy(Learner learner, MenueItem mi) {
-		if(learner.getTokens() >= mi.getCost()) {
-			learner.deductTokens(mi.getCost());
-			
-			cafeManager.addTokens(mi.getCost());
-			cafeManager.newSale(learner, mi);
-			
-			return learner.getFirstName() + " bought " + mi.toString() + " for " + mi.getCost() + " tokens";
+	public String buy(Consumer con, MenueItem mi) {
+		if(isTeacherOrIsLeanrner(con)) {
+			if(con instanceof Teacher) {
+				Teacher teach = (Teacher)con;
+				if(teach.qualiesfyForDiscount())
+					return peformTransaction(teach, mi, teach.discountedPrice(mi.getCost()));
+				else 
+					return peformTransaction(teach, mi, mi.getCost());
+			} else {
+				return peformTransaction(con, mi, mi.getCost());
 		}
+	}
 		
-		return "Not enough tokens";
+		return "Only teachers or learners can make purchases";
 	}
 	
-	public String buy(Teacher teacher, MenueItem mi) {
-		if(teacher.qualifiesForDiscount()) {
-			int newPrice = mi.getCost()  - (int) (mi.getCost() * 0.25);
-			
-			if(teacher.getTokens() >= newPrice) {
-				teacher.deductTokens(newPrice);
-				
-				cafeManager.addTokens(newPrice);
-				cafeManager.newSale(teacher, mi);
-				
-				return teacher.getFirstName() + " bought " + mi.toString() + " for " + newPrice + " tokens";
-			} else
-				return "Not enough tokens";
-		}
-
-		if(teacher.getTokens() >= mi.getCost()) {
-			teacher.deductTokens(mi.getCost());
-			
-			cafeManager.addTokens(mi.getCost());
-			cafeManager.newSale(teacher, mi);
-			
-			return teacher.getFirstName() + " bought " + mi.toString() + " for " + mi.getCost() + " tokens";
+	protected String peformTransaction(Consumer con, MenueItem mi, int amount) {
+		if(con.hasEnoughTokens(amount)) {
+			con.deductTokens(amount);
+			updateCafeteriaManagerTokensAndSales(amount, mi, con);
+			return con.getFirstName() + " bought " + mi.toString();
 		} else
 			return "Not enough tokens";
-
 	}
 	
-	public static void main(String[] args) {
-		CafeteriaManager cafeMan = new CafeteriaManager("Thaabit", "Jacobs", "");
-
-		Cafeteria cafe = new Cafeteria(cafeMan);
-		
-		Teacher teacher = new Teacher("James", "Bald", "");
-		
-		Learner learner = new Learner("Matt", "Brown", "");
-		
-		System.out.println(cafe.buy(teacher, MenueItem.BREAKFAST));
+	protected boolean isTeacherOrIsLeanrner(Consumer con) {
+		return con instanceof Teacher || con instanceof Learner;
+	}
+	
+	protected void updateCafeteriaManagerTokensAndSales(int amount, MenueItem mi, Consumer con) {
+		cafeManager.addTokens(amount);
+		cafeManager.newSale(con, mi);
 	}
 }

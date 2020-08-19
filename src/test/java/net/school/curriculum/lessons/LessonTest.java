@@ -1,234 +1,356 @@
 package net.school.curriculum.lessons;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalTime;
 
+import org.junit.jupiter.api.Test;
+
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
-import net.school.persons.learners.Learner;
-import net.school.persons.principal.Principal;
-import net.school.persons.teachers.Teacher;
+import net.school.person.consumer.Learner;
+import net.school.person.consumer.Teacher;
 
 class LessonTest {
 	
-	Principal principal = new Principal("Ruiter", "Brad", "");
+	private LocalTime time = LocalTime.of(13, 45);
 	
-	Learner learner  = new Learner("James", "Bald", "");
-	Learner learner2  = new Learner("James", "Bald", "");
-	Learner learner3  = new Learner("James", "Bald", "");
-	Learner learner4  = new Learner("James", "Bald", "");
-	Learner learner5  = new Learner("James", "Bald", "");
+	private Teacher jones = new Teacher("Jones", "John", "jones@gmail.com");
 	
-	Teacher teacher = new Teacher("Thaabit", "Jacobs", "");
+	private Lesson math = new Lesson(jones, Subject.MATH, time);
 	
-	Lesson lesson = new Lesson(teacher, LocalTime.of(11, 30), Subject.MATH);
-	
+	private Learner mikey = new Learner("Mikey", "March", "mikey@gmail.com");
+	private Learner job = new Learner("Job", "Done", " ");
+	private Learner sean = new Learner("Sean", "Evans", " ");
+	private Learner kate = new Learner("Kate", "Break", " ");
+	private Learner sam = new Learner("Sam", "Smith", " ");
 	
 	@Test
-	void shouldReturnFalseForTeacherNotQualifiedToTeachSubject() {
-		assertEquals(true, !lesson.isQualifiedToTeachSubject());
+	void shouldReturnFlaseWhenLearnerNotRegisteredForSubjectOrAttendingAnotherLesson() {
+		assertEquals(false, math.attendLesson(mikey));
 	}
 	
 	@Test
-	void shouldReturnTrueForTeacherQualifiedToTeachSubject() {
-		teacher.addQualifiedSubject(Subject.MATH);
-		assertEquals(true, lesson.isQualifiedToTeachSubject());
+	void shouldReturnTrueWhenLearnerAttendingLesson() {
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		assertEquals(true, math.attendLesson(mikey));
 	}
 	
 	@Test
-	void shouldGetTeacherObject() {
-		assertEquals("Thaabit", lesson.getTeacher().getFirstName());
+	void shouldReturnTrueWhenLearnersAttendingIsLessThanFive() {		
+		assertEquals(true, math.isLessonCancelled());
 	}
 	
 	@Test
-	void shouldGetLocalTimeObject() {
-		assertEquals("11:30", lesson.getTime().toString());
+	void shouldReturnFalseWhenLearnersAttendingIsMoreThanOrEqualToFive() {
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		job.registerNewSubject(Subject.MATH);
+		job.registerNewSubject(Subject.AFRIKAANS);
+		job.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sean.registerNewSubject(Subject.MATH);
+		sean.registerNewSubject(Subject.AFRIKAANS);
+		sean.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		kate.registerNewSubject(Subject.MATH);
+		kate.registerNewSubject(Subject.AFRIKAANS);
+		kate.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sam.registerNewSubject(Subject.MATH);
+		sam.registerNewSubject(Subject.AFRIKAANS);
+		sam.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		math.attendLesson(job);
+		math.attendLesson(mikey);
+		math.attendLesson(sean);
+		math.attendLesson(sam);
+		math.attendLesson(kate);
+		
+		assertEquals(false, math.isLessonCancelled());
 	}
 	
 	@Test
-	void shouldGetSubject() {
-		assertEquals(Subject.MATH, lesson.getSubject());
+	void shouldReturnLessonNotStartedWhenStartingCancelledLessonAndStatusIsNotPending() {
+		assertEquals("Lesson is cancelled", math.start());
 	}
 	
 	@Test
-	void shouldReturnTrueWhenLearnerIsAddedToMethod() {
-		learner.addSubject(Subject.MATH);
-		learner.addSubject(Subject.AFRIKAANS);
-		learner.addSubject(Subject.BUSSINESS_STUDIES);
+	void shouldReturnLessonHasBeenStartingWhenStartingCancelledLessonAndStatusIsNotPending() {
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		assertEquals(true, lesson.addLearnerLesson(learner));
+		job.registerNewSubject(Subject.MATH);
+		job.registerNewSubject(Subject.AFRIKAANS);
+		job.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sean.registerNewSubject(Subject.MATH);
+		sean.registerNewSubject(Subject.AFRIKAANS);
+		sean.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		kate.registerNewSubject(Subject.MATH);
+		kate.registerNewSubject(Subject.AFRIKAANS);
+		kate.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sam.registerNewSubject(Subject.MATH);
+		sam.registerNewSubject(Subject.AFRIKAANS);
+		sam.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		math.attendLesson(job);
+		math.attendLesson(mikey);
+		math.attendLesson(sean);
+		math.attendLesson(sam);
+		math.attendLesson(kate);
+		
+		assertEquals("Lesson has started", math.start());
 	}
 	
 	@Test
-	void shouldReturnTrueForCancelledLessonForLearnersAtendingLessThanFive() {
-		lesson.addLearnerLesson(learner);
-		assertEquals(true, lesson.isCancelled());
+	void shouldReturnLessonCouldNotBeCompletedWhenStatusIsNotActive() {
+		assertEquals("Lesson is pending", math.end());
 	}
 	
 	@Test
-	void shouldReturnLessonStatusIsCancelledIfIsCancelledTrue() {
-		lesson.addLearnerLesson(learner);
-		lesson.isCancelled();
-		assertEquals(LessonStatus.CANCELLED, lesson.getLessonStatus());
+	void shouldReturnLessonCompletedWhenStatusIsActive() {
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		job.registerNewSubject(Subject.MATH);
+		job.registerNewSubject(Subject.AFRIKAANS);
+		job.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sean.registerNewSubject(Subject.MATH);
+		sean.registerNewSubject(Subject.AFRIKAANS);
+		sean.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		kate.registerNewSubject(Subject.MATH);
+		kate.registerNewSubject(Subject.AFRIKAANS);
+		kate.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sam.registerNewSubject(Subject.MATH);
+		sam.registerNewSubject(Subject.AFRIKAANS);
+		sam.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		math.attendLesson(job);
+		math.attendLesson(mikey);
+		math.attendLesson(sean);
+		math.attendLesson(sam);
+		math.attendLesson(kate);
+		
+		math.start();
+		
+		assertEquals("Lesson has completed", math.end());
 	}
 	
 	@Test
-	void shouldReturnlessonHasBeenCancelledForInSufficnetLearnerCount() {
-		assertEquals("Lesson has been cancelled", lesson.start());
+	void shouldReturnLessonHasStartedhenTaughtByTeacher() {
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		job.registerNewSubject(Subject.MATH);
+		job.registerNewSubject(Subject.AFRIKAANS);
+		job.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sean.registerNewSubject(Subject.MATH);
+		sean.registerNewSubject(Subject.AFRIKAANS);
+		sean.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		kate.registerNewSubject(Subject.MATH);
+		kate.registerNewSubject(Subject.AFRIKAANS);
+		kate.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sam.registerNewSubject(Subject.MATH);
+		sam.registerNewSubject(Subject.AFRIKAANS);
+		sam.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		math.attendLesson(job);
+		math.attendLesson(mikey);
+		math.attendLesson(sean);
+		math.attendLesson(sam);
+		math.attendLesson(kate);
+		
+		jones.registerNewSubject(Subject.MATH);
+		
+		assertEquals("Lesson has started", math.teachLesson());
 	}
 	
 	@Test
-	void shouldReturnLessonHasStartedForSufficentStudentCount() {
-		learner.addSubject(Subject.MATH);
-		learner.addSubject(Subject.AFRIKAANS);
-		learner.addSubject(Subject.BUSSINESS_STUDIES);
+	void shouldAddTokensToAllLearnersAttending(){
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner2.addSubject(Subject.MATH);
-		learner2.addSubject(Subject.AFRIKAANS);
-		learner2.addSubject(Subject.BUSSINESS_STUDIES);
+		job.registerNewSubject(Subject.MATH);
+		job.registerNewSubject(Subject.AFRIKAANS);
+		job.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner3.addSubject(Subject.MATH);
-		learner3.addSubject(Subject.AFRIKAANS);
-		learner3.addSubject(Subject.BUSSINESS_STUDIES);
+		sean.registerNewSubject(Subject.MATH);
+		sean.registerNewSubject(Subject.AFRIKAANS);
+		sean.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner4.addSubject(Subject.MATH);
-		learner4.addSubject(Subject.AFRIKAANS);
-		learner4.addSubject(Subject.BUSSINESS_STUDIES);
+		kate.registerNewSubject(Subject.MATH);
+		kate.registerNewSubject(Subject.AFRIKAANS);
+		kate.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner5.addSubject(Subject.MATH);
-		learner5.addSubject(Subject.AFRIKAANS);
-		learner5.addSubject(Subject.BUSSINESS_STUDIES);
+		sam.registerNewSubject(Subject.MATH);
+		sam.registerNewSubject(Subject.AFRIKAANS);
+		sam.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		lesson.addLearnerLesson(learner);
-		lesson.addLearnerLesson(learner2);
-		lesson.addLearnerLesson(learner3);
-		lesson.addLearnerLesson(learner4);
-		lesson.addLearnerLesson(learner5);
-		assertEquals("Lesson has been started", lesson.start());
+		math.attendLesson(job);
+		math.attendLesson(mikey);
+		math.attendLesson(sean);
+		math.attendLesson(sam);
+		math.attendLesson(kate);
+		
+		math.addTokensToLearners();
+		
+		assertEquals(3, math.getLearnersAttendingLesson().get(2).getTokens());
 	}
 	
 	@Test
-	void shouldReturnLessonHasntFinishedIfLessonHasntStarted() {
-		lesson.addLearnerLesson(learner);
-		lesson.addLearnerLesson(learner);
-		lesson.addLearnerLesson(learner);
-		lesson.addLearnerLesson(learner);
-		lesson.addLearnerLesson(learner);
-		assertEquals("Lesson is PENDING", lesson.end());
+	void shouldSetAtteningToFalseToAllLearnersAttending(){
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		job.registerNewSubject(Subject.MATH);
+		job.registerNewSubject(Subject.AFRIKAANS);
+		job.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sean.registerNewSubject(Subject.MATH);
+		sean.registerNewSubject(Subject.AFRIKAANS);
+		sean.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		kate.registerNewSubject(Subject.MATH);
+		kate.registerNewSubject(Subject.AFRIKAANS);
+		kate.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		sam.registerNewSubject(Subject.MATH);
+		sam.registerNewSubject(Subject.AFRIKAANS);
+		sam.registerNewSubject(Subject.BUSSINESS_STUDIES);
+		
+		math.attendLesson(job);
+		math.attendLesson(mikey);
+		math.attendLesson(sean);
+		math.attendLesson(sam);
+		math.attendLesson(kate);
+		
+		math.setAttendingToFalse();
+		
+		assertEquals(false, math.getLearnersAttendingLesson().get(2).getIsAttendingLesson());
 	}
 	
 	@Test
-	void shouldReturnLessonHasFinsishedWhenLessonIsStarted() {
-		learner.addSubject(Subject.MATH);
-		learner.addSubject(Subject.AFRIKAANS);
-		learner.addSubject(Subject.BUSSINESS_STUDIES);
+	void shouldAddNotesToAllLearnersAttending(){
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner2.addSubject(Subject.MATH);
-		learner2.addSubject(Subject.AFRIKAANS);
-		learner2.addSubject(Subject.BUSSINESS_STUDIES);
+		job.registerNewSubject(Subject.MATH);
+		job.registerNewSubject(Subject.AFRIKAANS);
+		job.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner3.addSubject(Subject.MATH);
-		learner3.addSubject(Subject.AFRIKAANS);
-		learner3.addSubject(Subject.BUSSINESS_STUDIES);
+		sean.registerNewSubject(Subject.MATH);
+		sean.registerNewSubject(Subject.AFRIKAANS);
+		sean.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner4.addSubject(Subject.MATH);
-		learner4.addSubject(Subject.AFRIKAANS);
-		learner4.addSubject(Subject.BUSSINESS_STUDIES);
+		kate.registerNewSubject(Subject.MATH);
+		kate.registerNewSubject(Subject.AFRIKAANS);
+		kate.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner5.addSubject(Subject.MATH);
-		learner5.addSubject(Subject.AFRIKAANS);
-		learner5.addSubject(Subject.BUSSINESS_STUDIES);
+		sam.registerNewSubject(Subject.MATH);
+		sam.registerNewSubject(Subject.AFRIKAANS);
+		sam.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		lesson.addLearnerLesson(learner);
-		lesson.addLearnerLesson(learner2);
-		lesson.addLearnerLesson(learner3);
-		lesson.addLearnerLesson(learner4);
-		lesson.addLearnerLesson(learner5);
-		lesson.start();
-		assertEquals("Lesson is finished", lesson.end());
+		math.attendLesson(job);
+		math.attendLesson(mikey);
+		math.attendLesson(sean);
+		math.attendLesson(sam);
+		math.attendLesson(kate);
+		
+		math.addNotesToLearners();
+		
+		assertEquals(AquiredType.ATTENDED_LESSON, math.getLearnersAttendingLesson().get(2).getNotes().get(Subject.MATH));
 	}
 	
 	@Test
-	void shouldSetAttendingLessonToFalse() {
-		learner.addSubject(Subject.AFRIKAANS);
-		learner.addSubject(Subject.BUSSINESS_STUDIES);
-		learner.addSubject(Subject.MATH);
-		
-		lesson.addLearnerLesson(learner);
-		
-		lesson.start();
-		lesson.end();
-		assertEquals(true, learner.getAttendingLesson() == false);
+	void shouldReturnTeacherNotQualifiedForTeachingSubjectthatTeacherNotQualifiedFor(){
+		assertEquals("Teacher is not qualified to teach MATH", math.teachLesson());
 	}
 	
 	@Test
-	void shouldAddTokensToLarnersAfterAttendingLesson() {
-		learner.addSubject(Subject.MATH);
-		learner.addSubject(Subject.AFRIKAANS);
-		learner.addSubject(Subject.BUSSINESS_STUDIES);
+	void shouldReturnLessonHasStartedIfTeacherRegisteredForSubject(){
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner2.addSubject(Subject.MATH);
-		learner2.addSubject(Subject.AFRIKAANS);
-		learner2.addSubject(Subject.BUSSINESS_STUDIES);
+		job.registerNewSubject(Subject.MATH);
+		job.registerNewSubject(Subject.AFRIKAANS);
+		job.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner3.addSubject(Subject.MATH);
-		learner3.addSubject(Subject.AFRIKAANS);
-		learner3.addSubject(Subject.BUSSINESS_STUDIES);
+		sean.registerNewSubject(Subject.MATH);
+		sean.registerNewSubject(Subject.AFRIKAANS);
+		sean.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner4.addSubject(Subject.MATH);
-		learner4.addSubject(Subject.AFRIKAANS);
-		learner4.addSubject(Subject.BUSSINESS_STUDIES);
+		kate.registerNewSubject(Subject.MATH);
+		kate.registerNewSubject(Subject.AFRIKAANS);
+		kate.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner5.addSubject(Subject.MATH);
-		learner5.addSubject(Subject.AFRIKAANS);
-		learner5.addSubject(Subject.BUSSINESS_STUDIES);
+		sam.registerNewSubject(Subject.MATH);
+		sam.registerNewSubject(Subject.AFRIKAANS);
+		sam.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		lesson.addLearnerLesson(learner);
-		lesson.addLearnerLesson(learner2);
-		lesson.addLearnerLesson(learner3);
-		lesson.addLearnerLesson(learner4);
-		lesson.addLearnerLesson(learner5);
+		math.attendLesson(job);
+		math.attendLesson(mikey);
+		math.attendLesson(sean);
+		math.attendLesson(sam);
+		math.attendLesson(kate);
 		
-		lesson.start();
-		lesson.end();
+		jones.registerNewSubject(Subject.MATH);
 		
-		assertEquals(3, lesson.getLearnerAttending().get(0).getTokens());
+		assertEquals("Lesson has started", math.teachLesson());
 	}
 	
 	@Test
-	void shouldAddNotesToLearnersAfterAttendingLesson() {
-		learner.addSubject(Subject.MATH);
-		learner.addSubject(Subject.AFRIKAANS);
-		learner.addSubject(Subject.BUSSINESS_STUDIES);
+	void shouldReturnLessonCompletedWhenLessonIsEnded(){
+		mikey.registerNewSubject(Subject.MATH);
+		mikey.registerNewSubject(Subject.AFRIKAANS);
+		mikey.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner2.addSubject(Subject.MATH);
-		learner2.addSubject(Subject.AFRIKAANS);
-		learner2.addSubject(Subject.BUSSINESS_STUDIES);
+		job.registerNewSubject(Subject.MATH);
+		job.registerNewSubject(Subject.AFRIKAANS);
+		job.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner3.addSubject(Subject.MATH);
-		learner3.addSubject(Subject.AFRIKAANS);
-		learner3.addSubject(Subject.BUSSINESS_STUDIES);
+		sean.registerNewSubject(Subject.MATH);
+		sean.registerNewSubject(Subject.AFRIKAANS);
+		sean.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner4.addSubject(Subject.MATH);
-		learner4.addSubject(Subject.AFRIKAANS);
-		learner4.addSubject(Subject.BUSSINESS_STUDIES);
+		kate.registerNewSubject(Subject.MATH);
+		kate.registerNewSubject(Subject.AFRIKAANS);
+		kate.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		learner5.addSubject(Subject.MATH);
-		learner5.addSubject(Subject.AFRIKAANS);
-		learner5.addSubject(Subject.BUSSINESS_STUDIES);
+		sam.registerNewSubject(Subject.MATH);
+		sam.registerNewSubject(Subject.AFRIKAANS);
+		sam.registerNewSubject(Subject.BUSSINESS_STUDIES);
 		
-		lesson.addLearnerLesson(learner);
-		lesson.addLearnerLesson(learner2);
-		lesson.addLearnerLesson(learner3);
-		lesson.addLearnerLesson(learner4);
-		lesson.addLearnerLesson(learner5);
+		math.attendLesson(job);
+		math.attendLesson(mikey);
+		math.attendLesson(sean);
+		math.attendLesson(sam);
+		math.attendLesson(kate);
 		
-		lesson.start();
-		lesson.end();
+		jones.registerNewSubject(Subject.MATH);
 		
-		assertEquals(true, AquiredType.ATTENDED_LESSON.equals(lesson.getLearnerAttending().get(0).getNotes().get(lesson)));
+		math.teachLesson();
+		
+		assertEquals("Lesson has completed", math.endLesson());
 	}
 }
