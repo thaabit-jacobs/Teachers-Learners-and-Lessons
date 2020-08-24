@@ -10,21 +10,15 @@ import net.school.person.Principal;
 import net.school.person.consumer.*;
 
 public class School {
-	private Principal principal = new Principal("John", "Snith", "");
+	Principal principal = new Principal("John", "Snith", "");
 	
 	private CafeteriaManager cafeMan = new CafeteriaManager("Bill", "Meyers", "");
 
-	private Cafeteria cafe = new Cafeteria(cafeMan);
-	
-<<<<<<< HEAD
+	Cafeteria cafe = new Cafeteria(cafeMan);
+
 	ArrayList<Teacher> teachers = new ArrayList<>();
 	ArrayList<Learner> learners = new ArrayList<>();
-	ArrayList<Lesson> lessons = new ArrayList<>();
-=======
-	private ArrayList<Teacher> teachers = new ArrayList<>();
-	private ArrayList<Learner> learners = new ArrayList<>();
 	private ArrayList<Lesson> lessons = new ArrayList<>();
->>>>>>> 5e8f4f46ee5361158f19ccc7896cc1538fbb190f
 	
 	public School() {
 		teachers.add( new Teacher("Linda", "Carl", ""));
@@ -39,19 +33,11 @@ public class School {
 		learners.add( new Learner("Sbu", "Jones", ""));
 		learners.add( new Learner("Joshua", "Smith", ""));
 		
-<<<<<<< HEAD
-		lessons.add( new MathLesson(teachers.get(0), LocalTime.of(10, 30)));
-		lessons.add( new EnglishLesson(teachers.get(1), LocalTime.of(11, 45)));
-		lessons.add( new AfrikaansLesson(teachers.get(0), LocalTime.of(12, 00)));
-		lessons.add( new MathLesson(teachers.get(1), LocalTime.of(1, 30)));
-		lessons.add( new LifeSciencesLesson(teachers.get(2), LocalTime.of(2, 45)));
-=======
 		lessons.add( new Lesson(teachers.get(0), Subject.MATH, LocalTime.of(10, 30)));
 		lessons.add( new Lesson(teachers.get(1), Subject.ENGLISH, LocalTime.of(11, 45)));
 		lessons.add( new Lesson(teachers.get(2), Subject.LIFE_SCIENCES, LocalTime.of(1, 30)));
 		lessons.add( new Lesson(teachers.get(1), Subject.MATH, LocalTime.of(2, 45)));
 		lessons.add( new Lesson(teachers.get(0), Subject.AFRIKAANS, LocalTime.of(3, 30)));
->>>>>>> 5e8f4f46ee5361158f19ccc7896cc1538fbb190f
 		
 		teachers.get(0).registerNewSubject(Subject.MATH);
 		teachers.get(0).registerNewSubject(Subject.AFRIKAANS);

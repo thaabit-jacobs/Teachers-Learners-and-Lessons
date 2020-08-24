@@ -29,10 +29,7 @@ public class SchoolDay {
 		System.out.println(sch.getLesson(Subject.ENGLISH, "Nkosi").teachLesson());
 		System.out.println(sch.getLesson(Subject.ENGLISH, "Nkosi").endLesson());
 		System.out.print("\n");
-		
-<<<<<<< HEAD
-		//Life Science class
-=======
+
 		//BREAK
 		System.out.println(sch.getCafeteria().buy(sch.getLearner("Thaabit"), MenueItem.BREAKFAST));
 		System.out.println(sch.getCafeteria().buy(sch.getLearner("Amanda"), MenueItem.BREAKFAST));
@@ -41,7 +38,6 @@ public class SchoolDay {
 		System.out.print("\n");
 		
 		//LIFE SCIENCE LESSON
->>>>>>> 5e8f4f46ee5361158f19ccc7896cc1538fbb190f
 		System.out.println("Life Science lesson");
 		sch.getLesson(Subject.LIFE_SCIENCES, "Bill").attendLesson(sch.getLearner("Thaabit"));
 		sch.getLesson(Subject.LIFE_SCIENCES, "Bill").attendLesson(sch.getLearner("Mike"));
@@ -53,7 +49,6 @@ public class SchoolDay {
 		System.out.println(sch.getLesson(Subject.LIFE_SCIENCES, "Bill").getLessonStatus());
 		System.out.print("\n");
 		
-<<<<<<< HEAD
 		//Lunch break
 		System.out.println("Break");
 		System.out.println(sch.cafe.buy(sch.teachers.get(0), MenueItem.AFTERNOON_SNACK));
@@ -62,11 +57,8 @@ public class SchoolDay {
 		System.out.println(sch.cafe.buy(sch.learners.get(1), MenueItem.DRINK));
 		System.out.println(sch.cafe.buy(sch.teachers.get(2), MenueItem.DRINK));
 		System.out.print("\n");
-		
-		//Math lesson
-=======
+
 		//MATH LESSON
->>>>>>> 5e8f4f46ee5361158f19ccc7896cc1538fbb190f
 		System.out.println("Math lesson");
 		sch.getLesson(Subject.MATH, "Nkosi").attendLesson(sch.getLearner("Thaabit"));
 		sch.getLesson(Subject.MATH, "Nkosi").attendLesson(sch.getLearner("Mike"));
@@ -77,11 +69,7 @@ public class SchoolDay {
 		System.out.println(sch.getLesson(Subject.MATH, "Nkosi").endLesson());
 		System.out.print("\n");
 		
-<<<<<<< HEAD
-		//Afrkiaans lesson
-=======
 		//AFRIKAANS LESSON
->>>>>>> 5e8f4f46ee5361158f19ccc7896cc1538fbb190f
 		System.out.println("Afrikaans lesson");
 		sch.getLesson(Subject.AFRIKAANS, "Linda").attendLesson(sch.getLearner("Thaabit"));
 		sch.getLesson(Subject.AFRIKAANS, "Linda").attendLesson(sch.getLearner("Mike"));
@@ -104,21 +92,19 @@ public class SchoolDay {
 		//LEARNER END OF DAY CHECK
 		sch.getLearner("Mike").endOfDayStatus();
 		System.out.print("\n");
-<<<<<<< HEAD
-		
+
 		//Learner end of day
-		System.out.println(sch.learners.get(2).endOfDayStatus());
+		sch.learners.get(2).endOfDayStatus();
 		System.out.print("\n");
 		
 		////principal end of day
-		System.out.println(sch.principal.endOfDayStatus());
-=======
+		sch.principal.endOfDayStatus(sch.getLesson(Subject.AFRIKAANS, "Linda"));
+
 		sch.getLearner("Thaabit").endOfDayStatus();
 		System.out.print("\n");
 		
 		//CAFETERIAMANAGER END OF DAY
 		sch.getCafeteriaManager().endOfDayStatus();
->>>>>>> 5e8f4f46ee5361158f19ccc7896cc1538fbb190f
 		System.out.print("\n");
 		
 		//PRINCIPAL END OF DAY

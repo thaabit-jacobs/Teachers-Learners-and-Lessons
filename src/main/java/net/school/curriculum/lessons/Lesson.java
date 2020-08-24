@@ -2,10 +2,9 @@ package net.school.curriculum.lessons;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
+
 import java.util.HashMap;
->>>>>>> 5e8f4f46ee5361158f19ccc7896cc1538fbb190f
+
 
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
