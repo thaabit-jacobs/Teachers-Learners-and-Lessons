@@ -13,14 +13,14 @@ import net.school.curriculum.subjects.Subject;
 
 public class TeacherDb 
 {
-	private final Map<Integer, Subject> subjectKey;
+	private final Map<Subject, Integer> subjectKey;
 	
 	private Connection conn;
 	
 	final String getTeacherWithEmailQuery = "SELECT * FROM teacher WHERE email=?";
 	final String getTeacherWithIdQuery = "SELECT * FROM teacher WHERE id=?";
 	final String checkIfTeacherExistQuery = "SELECT * FROM teacher_exist(?)";
-	final String isSubjectRegistered = "";
+	final String isSubjectRegistered = "SELECT * FROM is_subject_registered(?, ?)";
 	
 	private Statement stmt;
 	private PreparedStatement pstmt;
@@ -41,13 +41,13 @@ public class TeacherDb
 		}
 		
 		subjectKey = new HashMap<>();
-		subjectKey.put(1, Subject.MATH);
-		subjectKey.put(2, Subject.ENGLISH);
-		subjectKey.put(3, Subject.AFRIKAANS);
-		subjectKey.put(4, Subject.LIFE_SCIENCES);
-		subjectKey.put(5, Subject.GEOGRAPHY);
-		subjectKey.put(6, Subject.BUSSINESS_STUDIES);
-		subjectKey.put(7, Subject.PHYSICAL_EDUCATIONS);
+		subjectKey.put(Subject.MATH, 1);
+		subjectKey.put(Subject.ENGLISH, 2);
+		subjectKey.put(Subject.AFRIKAANS, 3);
+		subjectKey.put(Subject.LIFE_SCIENCES, 4);
+		subjectKey.put(Subject.GEOGRAPHY, 5);
+		subjectKey.put(Subject.BUSSINESS_STUDIES, 6);
+		subjectKey.put(Subject.PHYSICAL_EDUCATIONS, 7);
 		
 	}
 	
@@ -133,6 +133,9 @@ public class TeacherDb
 			
 			teacherEmail = rs.getString("email");
 			
+			rs.close();
+			pstmt.close();
+			
 			return teacherEmail;
 		}  catch (SQLException e) 
 		{
@@ -174,4 +177,39 @@ public class TeacherDb
 		
 		return false;
 	}
-}
+	
+	public boolean isRegisteredForSubject(String teacherEmail, Subject subject)
+	{
+		boolean subject_registered = false;
+		
+		ResultSet rs = null;
+		
+		try
+		{
+			int teacherId = getTeacherId(teacherEmail);
+			int subjectId = subjectKey.get(subject);
+			
+			pstmt = conn.prepareStatement(isSubjectRegistered);
+			pstmt.setInt(1, teacherId);
+			pstmt.setInt(2, subjectId);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			subject_registered = rs.getBoolean(1);
+			
+			rs.close();
+			pstmt.close();
+			
+			return subject_registered;
+			
+		} catch (SQLException e) 
+		{
+			System.out.println("Unable to check if subject registered");
+			System.out.println(e);
+		}
+		
+		return subject_registered;
+	}
+	}

@@ -10,6 +10,8 @@ import java.sql.Statement;
 
 import org.junit.jupiter.api.Test;
 
+import net.school.curriculum.subjects.Subject;
+
 class TeacherDbTest {
 
 	private TeacherDb db = new TeacherDb();
@@ -69,5 +71,19 @@ class TeacherDbTest {
 	{
 		String teacherEmail = db.getTeacherEmail(10);
 		assertEquals("", teacherEmail);
+	}
+	
+	@Test
+	void shouldReturnForTRueValidTeacherEmailAndubjectId()
+	{
+		boolean isSubjectRegistered = db.isRegisteredForSubject("lindas@gmail.com", Subject.GEOGRAPHY);
+		assertTrue(isSubjectRegistered);
+	}
+	
+	@Test
+	void shouldReturnForFalseInValidTeacherEmailAndubjectId()
+	{
+		boolean isSubjectRegistered = db.isRegisteredForSubject("lind@gmail.com", Subject.GEOGRAPHY);
+		assertFalse(isSubjectRegistered);
 	}
 }
