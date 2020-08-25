@@ -55,5 +55,19 @@ class TeacherDbTest {
 		int teacherLessonCount = db.getTeacherLessonCount("lind@gmail.com");
 		assertEquals(-1, teacherLessonCount);
 	}
+	
+	@Test
+	void shouldReturnTEacherEmailForValidId()
+	{
+		String teacherEmail = db.getTeacherEmail(1);
+		assertEquals("lindas@gmail.com", teacherEmail);
+	}
 		
+	
+	@Test
+	void shouldReturnEmptyStringForInvalidIdEmail()
+	{
+		String teacherEmail = db.getTeacherEmail(10);
+		assertEquals("", teacherEmail);
+	}
 }

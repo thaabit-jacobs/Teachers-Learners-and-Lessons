@@ -6,14 +6,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.school.curriculum.subjects.Subject;
 
 public class TeacherDb 
 {
+	private final Map<Integer, Subject> subjectKey;
 	
 	private Connection conn;
 	
-	final String getTeacherQuery = "SELECT * FROM teacher WHERE email=?";
+	final String getTeacherWithEmailQuery = "SELECT * FROM teacher WHERE email=?";
+	final String getTeacherWithIdQuery = "SELECT * FROM teacher WHERE id=?";
 	final String checkIfTeacherExistQuery = "SELECT * FROM teacher_exist(?)";
+	final String isSubjectRegistered = "";
 	
 	private Statement stmt;
 	private PreparedStatement pstmt;
@@ -32,6 +39,16 @@ public class TeacherDb
 		{
 			System.out.println("Could not connect to database");
 		}
+		
+		subjectKey = new HashMap<>();
+		subjectKey.put(1, Subject.MATH);
+		subjectKey.put(2, Subject.ENGLISH);
+		subjectKey.put(3, Subject.AFRIKAANS);
+		subjectKey.put(4, Subject.LIFE_SCIENCES);
+		subjectKey.put(5, Subject.GEOGRAPHY);
+		subjectKey.put(6, Subject.BUSSINESS_STUDIES);
+		subjectKey.put(7, Subject.PHYSICAL_EDUCATIONS);
+		
 	}
 	
 	public int getTeacherLessonCount(String email)
@@ -44,7 +61,7 @@ public class TeacherDb
 		{					
 			try 
 			{
-				pstmt = conn.prepareStatement(getTeacherQuery);
+				pstmt = conn.prepareStatement(getTeacherWithEmailQuery);
 				pstmt.setString(1, email);
 				
 				rs = pstmt.executeQuery();
@@ -76,7 +93,7 @@ public class TeacherDb
 				
 		try 
 		{
-			pstmt = conn.prepareStatement(getTeacherQuery);
+			pstmt = conn.prepareStatement(getTeacherWithEmailQuery);
 			pstmt.setString(1, email);
 			
 			rs = pstmt.executeQuery();
@@ -97,6 +114,33 @@ public class TeacherDb
 		}
 		
 		return 0;
+	}
+	
+	public String getTeacherEmail(int id)
+	{
+		String teacherEmail = "";
+		
+		ResultSet rs = null;
+		
+		try
+		{
+			pstmt = conn.prepareStatement(getTeacherWithIdQuery);
+			pstmt.setInt(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			teacherEmail = rs.getString("email");
+			
+			return teacherEmail;
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to get teacher");
+			System.out.println(e);
+		}
+		
+		return teacherEmail;
 	}
 	
 	public boolean teacherExist(String email)
