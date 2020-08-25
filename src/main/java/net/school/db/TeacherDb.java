@@ -21,6 +21,9 @@ public class TeacherDb
 	final String getTeacherWithIdQuery = "SELECT * FROM teacher WHERE id=?";
 	final String checkIfTeacherExistQuery = "SELECT * FROM teacher_exist(?)";
 	final String isSubjectRegistered = "SELECT * FROM is_subject_registered(?, ?)";
+	final String addNewSubjectToTEacherQuery = "INSERT INTO teacher_subject (teacher_id, subject_id) VALUES (?, ?)";
+	final String deleteRowFromTeacherAndSubjectQuery = "DELETE FROM teacher_subject WHERE teacher_id=? AND subject_id=?";
+	final String updateLessonTaughtCount = "UPDATE teacher SET 	lessons_taught=? where id=?";
 	
 	private Statement stmt;
 	private PreparedStatement pstmt;
@@ -184,10 +187,12 @@ public class TeacherDb
 		
 		ResultSet rs = null;
 		
+		int teacherId = getTeacherId(teacherEmail);
+		int subjectId = subjectKey.get(subject);
+		
 		try
 		{
-			int teacherId = getTeacherId(teacherEmail);
-			int subjectId = subjectKey.get(subject);
+
 			
 			pstmt = conn.prepareStatement(isSubjectRegistered);
 			pstmt.setInt(1, teacherId);
@@ -211,5 +216,64 @@ public class TeacherDb
 		}
 		
 		return subject_registered;
+	}
+	
+	public boolean registerNewSubject(String teacherEmail, Subject subject)
+	{	
+		ResultSet rs = null;
+		
+		int teacherId = getTeacherId(teacherEmail);
+		int subjectId = subjectKey.get(subject);
+		
+		try
+		{
+			if(!isRegisteredForSubject(teacherEmail, subject)) {
+				pstmt = conn.prepareStatement(addNewSubjectToTEacherQuery);
+				pstmt.setInt(1, teacherId);
+				pstmt.setInt(2, subjectId);
+				
+				pstmt.executeUpdate();
+				
+				pstmt.close();
+				
+				return true;
+			} 
+			
+			return false;
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to register to subject");
+			System.out.println(e);
+		}
+		
+		return false;
+	}
+	
+	public boolean deleteSubjectFromTeacher(String teacherEmail, Subject subject)
+	{	
+		ResultSet rs = null;
+		
+		int teacherId = getTeacherId(teacherEmail);
+		int subjectId = subjectKey.get(subject);
+		
+		try
+		{
+				pstmt = conn.prepareStatement(deleteRowFromTeacherAndSubjectQuery);
+				pstmt.setInt(1, teacherId);
+				pstmt.setInt(2, subjectId);
+				
+				pstmt.executeUpdate();
+				
+				pstmt.close();
+				
+				return true;
+			
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to delete subject");
+			System.out.println(e);
+		}
+		
+		return false;
 	}
 	}

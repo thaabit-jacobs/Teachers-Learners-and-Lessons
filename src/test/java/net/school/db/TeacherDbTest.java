@@ -86,4 +86,21 @@ class TeacherDbTest {
 		boolean isSubjectRegistered = db.isRegisteredForSubject("lind@gmail.com", Subject.GEOGRAPHY);
 		assertFalse(isSubjectRegistered);
 	}
+	
+	@Test
+	void shouldReturnTrueWhenREgisteringNewSubject()
+	{
+		db.deleteSubjectFromTeacher("billg@gmail.com", Subject.MATH);
+		boolean registered = db.registerNewSubject("billg@gmail.com", Subject.MATH);
+		assertTrue(registered);
+		
+	}
+	
+	@Test
+	void shouldReturnFalseWhenREgisteringNewSubjectThatAlrreadyRegistered()
+	{
+		boolean registered = db.registerNewSubject("billg@gmail.com", Subject.PHYSICAL_EDUCATIONS);
+		assertFalse(registered);
+		
+	}
 }
