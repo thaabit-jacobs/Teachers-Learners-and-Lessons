@@ -276,4 +276,57 @@ public class TeacherDb
 		
 		return false;
 	}
+	
+	
+	public boolean updateLessonCount(String teacherEmail)
+	{
+		boolean lessonCountUpdated = false;
+		
+		int teacherId = getTeacherId(teacherEmail);
+		int currentLessonCount = getTeacherLessonCount(teacherEmail);
+		
+		try
+		{
+			pstmt = conn.prepareStatement(updateLessonTaughtCount);
+			pstmt.setInt(1, ++currentLessonCount);
+			pstmt.setInt(2, teacherId);
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+			
+			return true;	
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to update lesson_taught count");
+			System.out.println(e);
+		}
+		
+		return false;
+	}
+	
+	public void setLessonCountToZero(String teacherEmail)
+	{	
+		int teacherId = getTeacherId(teacherEmail);
+		
+		try
+		{
+			pstmt = conn.prepareStatement(updateLessonTaughtCount);
+			pstmt.setInt(1, 0);
+			pstmt.setInt(2, teacherId);
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();	
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to set lesson_taught count to zero");
+			System.out.println(e);
+		}
+	}
+	
+	public boolean doesQualifyForDiscount(String teacherEmail)
+	{	
+		return getTeacherLessonCount(teacherEmail) >= 5;
+	}
 	}

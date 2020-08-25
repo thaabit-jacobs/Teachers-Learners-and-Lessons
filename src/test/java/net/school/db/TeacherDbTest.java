@@ -47,6 +47,7 @@ class TeacherDbTest {
 	@Test
 	void shouldReturnTeacherLessonCount()
 	{
+		db.setLessonCountToZero("lindas@gmail.com");
 		int teacherLessonCount = db.getTeacherLessonCount("lindas@gmail.com");
 		assertEquals(0, teacherLessonCount);
 	}
@@ -100,7 +101,16 @@ class TeacherDbTest {
 	void shouldReturnFalseWhenREgisteringNewSubjectThatAlrreadyRegistered()
 	{
 		boolean registered = db.registerNewSubject("billg@gmail.com", Subject.PHYSICAL_EDUCATIONS);
-		assertFalse(registered);
-		
+		assertFalse(registered);	
 	}
+	
+	@Test
+	void shouldReturnTueAndUpdateTeacherLessonTaughtCount()
+	{
+		db.updateLessonCount("lindas@gmail.com");
+		int updatedLessonCount = db.getTeacherLessonCount("lindas@gmail.com");
+		db.setLessonCountToZero("lindas@gmail.com");
+		assertEquals(1, updatedLessonCount);	
+	}
+	
 }
