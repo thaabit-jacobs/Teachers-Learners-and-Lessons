@@ -22,6 +22,7 @@ public class LearnerDb
 	
 	final String getLearnerWithEmail = "SELECT * FROM learner WHERE email=?;";
 	final String getLearnerWithId = "SELECT * FROM learner WHERE id=?;";
+	final String checkIfLearnerExistQuery = "SELECT * FROM learner_exist(?)";
 	
 	public LearnerDb()
 	{
@@ -99,10 +100,40 @@ public class LearnerDb
 			return learnerEmail;
 		}  catch (SQLException e) 
 		{
-			System.out.println("Unable to get teacher");
+			System.out.println("Unable to get learner");
 			System.out.println(e);
 		}
 		
 		return learnerEmail;
+	}
+	
+	public boolean learnerExist(String email)
+	{
+		boolean learnerExist = false;
+		
+		ResultSet rs = null;
+		
+		try
+		{
+			pstmt = conn.prepareStatement(checkIfLearnerExistQuery);
+			pstmt.setString(1, email);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			learnerExist = rs.getBoolean(1);
+			
+			rs.close();
+			pstmt.close();
+			
+			return learnerExist;
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to get learner");
+			System.out.println(e);
+		}
+		
+		return learnerExist;
 	}
 }

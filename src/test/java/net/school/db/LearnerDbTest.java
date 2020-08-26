@@ -31,5 +31,15 @@ class LearnerDbTest {
 		String learnerEmail = db.getLearnerEmail(-5);
 		assertEquals("", learnerEmail);
 	}
+	
+	@Test
+	void shouldReturnTrueForLearnerThatExist() {
+		assertTrue(db.learnerExist("thaabitj@gmail.com"));
+	}
+	
+	@Test
+	void shouldReturnFlaseForLearnerThatDoesNotExist() {
+		assertFalse(db.learnerExist("thaabitj@gmailm"));
+	}
 
 }
