@@ -19,5 +19,17 @@ class LearnerDbTest {
 		int learnerId = db.getLearnerId("thaabitjgmail.com");
 		assertEquals(0, learnerId);
 	}
+	
+	@Test
+	void shouldReturnLearnerEmailForValidId() {
+		String learnerEmail = db.getLearnerEmail(1);
+		assertEquals("thaabitj@gmail.com", learnerEmail);
+	}
+	
+	@Test
+	void shouldReturnEmptyStringForInValidId() {
+		String learnerEmail = db.getLearnerEmail(-5);
+		assertEquals("", learnerEmail);
+	}
 
 }

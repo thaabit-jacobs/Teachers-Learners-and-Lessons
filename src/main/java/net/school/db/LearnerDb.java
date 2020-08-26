@@ -21,6 +21,7 @@ public class LearnerDb
 	private PreparedStatement pstmt;
 	
 	final String getLearnerWithEmail = "SELECT * FROM learner WHERE email=?;";
+	final String getLearnerWithId = "SELECT * FROM learner WHERE id=?;";
 	
 	public LearnerDb()
 	{
@@ -63,6 +64,9 @@ public class LearnerDb
 			
 			learnerId = rs.getInt("id");
 			
+			rs.close();
+			pstmt.close();
+			
 			return learnerId;
 		} catch (SQLException e) 
 		{
@@ -71,5 +75,34 @@ public class LearnerDb
 		}
 		
 		return learnerId;
+	}
+	
+	public String getLearnerEmail(int learnerId)
+	{
+		String learnerEmail = "";
+		
+		ResultSet rs = null;
+		
+		try
+		{
+			pstmt = conn.prepareStatement(getLearnerWithId);
+			pstmt.setInt(1, learnerId);
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			learnerEmail = rs.getString("email");
+			
+			rs.close();
+			pstmt.close();
+			
+			return learnerEmail;
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to get teacher");
+			System.out.println(e);
+		}
+		
+		return learnerEmail;
 	}
 }
