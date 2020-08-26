@@ -24,7 +24,8 @@ public class LearnerDb
 	final String getLearnerWithId = "SELECT * FROM learner WHERE id=?;";
 	final String checkIfLearnerExistQuery = "SELECT * FROM learner_exist(?)";
 	final String isSubjectREgistered = "SELECT * FROM is_sub_registered_learner(?, ?);";
-	
+	final String isRegisteredThreeOrMoreSubjectsQuery = "SELECT * FROM has_three_more_subjects(?);"; 
+			
 	public LearnerDb()
 	{
 		try
@@ -169,5 +170,32 @@ public class LearnerDb
 		}
 		
 		return registeredSubject;
+	}
+	
+	public boolean isRegisteredThreeOrMoreSubjects(String learnerEmail)
+	{
+		int learnerId =  getLearnerId(learnerEmail);
+		
+		ResultSet rs = null;
+		
+		try
+		{
+			pstmt = conn.prepareStatement(isRegisteredThreeOrMoreSubjectsQuery);
+			pstmt.setInt(1, learnerId);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			int numberOfRegisteredSubjects = rs.getInt("has_three_more_subjects");
+			
+			return numberOfRegisteredSubjects >= 3? true :false;	
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to get learner ro subject");
+			System.out.println(e);
+		}
+		
+		return false;
 	}
 }

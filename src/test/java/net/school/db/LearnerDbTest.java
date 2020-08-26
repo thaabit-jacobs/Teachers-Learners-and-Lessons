@@ -53,4 +53,14 @@ class LearnerDbTest {
 	void shouldReturnFalseForSubjectLearnerIsNotRegisteredFor() {
 		assertFalse(db.isRegisteredSubject("thaabitj@gmail.com", Subject.MATH));
 	}
+	
+	@Test
+	void shouldREturnTRueForLearnerWithThreeOrMoreSubjects() {
+		assertTrue(db.isRegisteredThreeOrMoreSubjects("thaabitj@gmail.com"));
+	}
+	
+	@Test
+	void shouldREturnFalseForLearnerWithLessThanThreeSubjects() {
+		assertFalse(db.isRegisteredThreeOrMoreSubjects("sinawug@gmail.com"));
+	}
 }
