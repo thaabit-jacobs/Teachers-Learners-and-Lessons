@@ -1,1 +1,1 @@
-create table aquired(id not null primary key, type not null text);
+create table aquired(id serial not null primary key, type text not null);
