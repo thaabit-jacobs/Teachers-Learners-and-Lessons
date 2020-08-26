@@ -23,6 +23,7 @@ public class LearnerDb
 	final String getLearnerWithEmail = "SELECT * FROM learner WHERE email=?;";
 	final String getLearnerWithId = "SELECT * FROM learner WHERE id=?;";
 	final String checkIfLearnerExistQuery = "SELECT * FROM learner_exist(?)";
+	final String isSubjectREgistered = "SELECT * FROM is_sub_registered_learner(?, ?);";
 	
 	public LearnerDb()
 	{
@@ -135,5 +136,38 @@ public class LearnerDb
 		}
 		
 		return learnerExist;
+	}
+	
+	public boolean isRegisteredSubject(String learnerEmail, Subject subject)
+	{
+		boolean registeredSubject = false;
+		
+		int learnerId =  getLearnerId(learnerEmail);
+		int subjectId = subjectKey.get(subject);
+		
+		ResultSet rs = null;
+		
+		try
+		{
+			pstmt = conn.prepareStatement(isSubjectREgistered);
+			pstmt.setInt(1, learnerId);
+			pstmt.setInt(2, subjectId);
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			registeredSubject = rs.getBoolean(1);
+			
+			rs.close();
+			pstmt.close();
+			
+			return registeredSubject;
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to get learner ro subject");
+			System.out.println(e);
+		}
+		
+		return registeredSubject;
 	}
 }

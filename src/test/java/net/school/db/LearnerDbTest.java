@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import net.school.curriculum.subjects.Subject;
+
 class LearnerDbTest {
 	
 	private final LearnerDb db = new LearnerDb();
@@ -41,5 +43,14 @@ class LearnerDbTest {
 	void shouldReturnFlaseForLearnerThatDoesNotExist() {
 		assertFalse(db.learnerExist("thaabitj@gmailm"));
 	}
-
+	
+	@Test
+	void shouldReturnTrueForSubjectLearnerIsRegisteredFor() {
+		assertTrue(db.isRegisteredSubject("thaabitj@gmail.com", Subject.PHYSICAL_EDUCATIONS));
+	}
+	
+	@Test
+	void shouldReturnFalseForSubjectLearnerIsNotRegisteredFor() {
+		assertFalse(db.isRegisteredSubject("thaabitj@gmail.com", Subject.MATH));
+	}
 }
