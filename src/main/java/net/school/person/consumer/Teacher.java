@@ -3,40 +3,34 @@ package net.school.person.consumer;
 import java.util.ArrayList;
 
 import net.school.curriculum.subjects.Subject;
+import net.school.db.TeacherDb;
 
 public class Teacher extends Consumer{
 	
-	private int teacherLessonCount;
-	
-	private ArrayList<Subject> qualifiedSubjects;
+	private final TeacherDb db = new TeacherDb();
 	
 	public Teacher(String firstName, String lastName, String email) {
 		super(firstName, lastName, email);
-		
-		qualifiedSubjects = new ArrayList<>();
+	}
+	
+	public TeacherDb getTeacherDb() {
+		return db;
 	}
 	
 	public int getTeacherLessonCount() {
-		return teacherLessonCount;
+		return db.getTeacherLessonCount(this.getEmail());
 	}
 	
-	public boolean registerNewSubject(Subject subject) {
-		if(isSubjectRegsitered(subject))
-			return false;
-		
-		return qualifiedSubjects.add(subject);
+	public boolean registerNewSubject(Subject subject) {		
+		return db.registerNewSubject(this.getEmail(), subject);
 	}
 	
 	public boolean isSubjectRegsitered(Subject subject){
-		for(Subject sub: qualifiedSubjects)
-			if(sub == subject)
-				return true;
-		
-		return false;
+		return db.isRegisteredForSubject(this.getEmail(), subject);
 	}
 	
 	public boolean qualiesfyForDiscount() {
-		return teacherLessonCount >= 5;
+		return db.doesQualifyForDiscount(this.getEmail());
 	}
 	
 	public int discountedPrice(int price) {
@@ -44,6 +38,6 @@ public class Teacher extends Consumer{
 	}
 	
 	public void incrementLessonCount() {
-		teacherLessonCount++;
+		db.updateLessonCount(this.getEmail());
 	}
 }

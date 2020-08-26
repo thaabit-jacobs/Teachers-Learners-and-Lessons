@@ -1,0 +1,1 @@
+create table aquired(id not null primary key, type not null text);

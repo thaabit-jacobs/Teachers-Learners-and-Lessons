@@ -9,44 +9,51 @@ import net.school.person.consumer.Teacher;
 
 class TeacherTest {
 	
-	private Teacher jones = new Teacher("John", "Jones", "jones@gmail.com");
+	private Teacher linda = new Teacher("Linda", "Smith", "lindas@gmail.com");
 	
 	@Test
 	void shouldReturnFalseForSubjectThatNotRegistered() {
-		assertEquals(false, jones.isSubjectRegsitered(Subject.AFRIKAANS));
+		
+		assertEquals(false, linda.isSubjectRegsitered(Subject.BUSSINESS_STUDIES));
 	}
+	
 	
 	@Test
 	void shouldReturnTruewhenRegisteringNewSubject() {
-		assertEquals(true, jones.registerNewSubject(Subject.AFRIKAANS));
+		assertEquals(true, linda.registerNewSubject(Subject.BUSSINESS_STUDIES));
+		linda.getTeacherDb().deleteSubjectFromTeacher("lindas@gmail.com", Subject.BUSSINESS_STUDIES);
 	}
+	
 	
 	@Test
 	void shouldReturnFalsewhenRegisteringSubjectThatAlreadyExist() {
-		jones.registerNewSubject(Subject.AFRIKAANS);
-		assertEquals(false, jones.registerNewSubject(Subject.AFRIKAANS));
+		assertEquals(false, linda.registerNewSubject(Subject.ENGLISH));
 	}
 	
 	@Test
 	void shouldAddAmountToListenCount() {
-		jones.incrementLessonCount();
-		jones.incrementLessonCount();
-		jones.incrementLessonCount();
-		assertEquals(3, jones.getTeacherLessonCount());
+		linda.incrementLessonCount();
+		linda.incrementLessonCount();
+		linda.incrementLessonCount();
+		assertEquals(3, linda.getTeacherLessonCount());
+		linda.getTeacherDb().setLessonCountToZero("lindas@gmail.com");
 	}
+	
 	
 	@Test
 	void shouldReturnFalseForLessonCountLessThanFive() {
-		assertEquals(false, jones.qualiesfyForDiscount());
+		assertEquals(false, linda.qualiesfyForDiscount());
 	}
 	
 	@Test
 	void shouldReturnTrueForLessonCountMoreOrEqualToFive() {
-		jones.incrementLessonCount();
-		jones.incrementLessonCount();
-		jones.incrementLessonCount();
-		jones.incrementLessonCount();
-		jones.incrementLessonCount();
-		assertEquals(true, jones.qualiesfyForDiscount());
+		linda.incrementLessonCount();
+		linda.incrementLessonCount();
+		linda.incrementLessonCount();
+		linda.incrementLessonCount();
+		linda.incrementLessonCount();
+		assertEquals(true, linda.qualiesfyForDiscount());
+		linda.getTeacherDb().setLessonCountToZero("lindas@gmail.com");
 	}
+	
 }
