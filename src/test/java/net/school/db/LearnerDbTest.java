@@ -63,4 +63,14 @@ class LearnerDbTest {
 	void shouldREturnFalseForLearnerWithLessThanThreeSubjects() {
 		assertFalse(db.isRegisteredThreeOrMoreSubjects("sinawug@gmail.com"));
 	}
+	
+	@Test
+	void shouldReturntTrueForLearnerThatCanAttendLesson() {
+		assertTrue(db.canAttendLesson("thaabitj@gmail.com", Subject.PHYSICAL_EDUCATIONS));
+	}
+	
+	@Test
+	void shouldReturntFlaseForLearnerThatCanNotAttendLesson() {
+		assertTrue(db.canAttendLesson("thaabitj@gmail.com", Subject.ENGLISH));
+	}
 }

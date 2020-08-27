@@ -25,7 +25,9 @@ public class LearnerDb
 	final String checkIfLearnerExistQuery = "SELECT * FROM learner_exist(?)";
 	final String isSubjectREgistered = "SELECT * FROM is_sub_registered_learner(?, ?);";
 	final String isRegisteredThreeOrMoreSubjectsQuery = "SELECT * FROM has_three_more_subjects(?);"; 
-			
+	
+	private boolean isAttendingLesson;
+	
 	public LearnerDb()
 	{
 		try
@@ -49,6 +51,10 @@ public class LearnerDb
 		subjectKey.put(Subject.GEOGRAPHY, 5);
 		subjectKey.put(Subject.BUSSINESS_STUDIES, 6);
 		subjectKey.put(Subject.PHYSICAL_EDUCATIONS, 7);
+	}
+	
+	public boolean getIsAttendingLesson() {
+		return isAttendingLesson;
 	}
 	
 	public int getLearnerId(String email)
@@ -197,5 +203,12 @@ public class LearnerDb
 		}
 		
 		return false;
+	}
+	
+	public boolean canAttendLesson(String learnerEmail, Subject subject)
+	{
+		int subjectId = subjectKey.get(subject);
+		
+		return isRegisteredThreeOrMoreSubjects(learnerEmail) &&  isRegisteredSubject(learnerEmail, subject) && !getIsAttendingLesson();
 	}
 }
