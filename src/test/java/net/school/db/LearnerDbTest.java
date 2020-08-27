@@ -2,6 +2,8 @@ package net.school.db;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import net.school.curriculum.subjects.Subject;
@@ -83,5 +85,13 @@ class LearnerDbTest {
 	@Test
 	void shouldREgisterNotNewSubjectIfSubjectIsRegistered() {
 		assertFalse(db.registerNewSubject("thaabitj@gmail.com", Subject.PHYSICAL_EDUCATIONS));
+	} 
+	
+	@Test
+	void shouldReturnAlistWithTheLearnerSubjects() {
+		ArrayList<Subject> subjects = db.getRegisteredSubjects("thaabitj@gmail.com");
+		assertEquals("ENGLISH", subjects.get(0).toString());
+		assertEquals("AFRIKAANS", subjects.get(1).toString());
+		assertEquals("PHYSICAL_EDUCATIONS", subjects.get(2).toString());
 	} 
 }

@@ -6,14 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.school.curriculum.subjects.Subject;
 
 public class LearnerDb
 {
+	
+	private List<Subject> registeredSubjects;
+	
 	private final Map<Subject, Integer> subjectKey;
+	private final Map<Integer, Subject> subjectIdKey;
 
 	private Connection conn;
 	
@@ -26,7 +32,8 @@ public class LearnerDb
 	final String checkIfLearnerExistQuery = "SELECT * FROM learner_exist(?)";
 	final String isSubjectREgistered = "SELECT * FROM is_sub_registered_learner(?, ?);";
 	final String isRegisteredThreeOrMoreSubjectsQuery = "SELECT * FROM has_three_more_subjects(?);"; 
-	final String addNewSubjectToLearnerQuery = "INSERT INTO learner_subject (learner_id, subject_id) VALUES (?, ?)"; 
+	final String addNewSubjectToLearnerQuery = "INSERT INTO learner_subject (learner_id, subject_id) VALUES (?, ?)";
+	final String getLearnerRegisteredSubjects = "SELECT * FROM learner_subject WHERE learner_id=?";
 	
 	private boolean isAttendingLesson;
 	
@@ -53,6 +60,47 @@ public class LearnerDb
 		subjectKey.put(Subject.GEOGRAPHY, 5);
 		subjectKey.put(Subject.BUSSINESS_STUDIES, 6);
 		subjectKey.put(Subject.PHYSICAL_EDUCATIONS, 7);
+		
+		subjectIdKey = new HashMap<>();
+		subjectIdKey.put(1,Subject.MATH);
+		subjectIdKey.put(2, Subject.ENGLISH);
+		subjectIdKey.put(3, Subject.AFRIKAANS);
+		subjectIdKey.put(4, Subject.LIFE_SCIENCES);
+		subjectIdKey.put(5, Subject.GEOGRAPHY);
+		subjectIdKey.put(6, Subject.BUSSINESS_STUDIES);
+		subjectIdKey.put(7, Subject.PHYSICAL_EDUCATIONS);
+		
+		registeredSubjects = new ArrayList<>();
+	}
+	
+	public ArrayList<Subject> getRegisteredSubjects(String learnerEmail)
+	{
+		int learnerId =  getLearnerId(learnerEmail);
+		
+		ResultSet rs = null;
+		
+		try
+		{
+			pstmt = conn.prepareStatement(getLearnerRegisteredSubjects);
+			pstmt.setInt(1, learnerId);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next())
+				registeredSubjects.add(subjectIdKey.get(rs.getInt("subject_id")));
+			
+			rs.close();
+			pstmt.close();
+			
+			return new ArrayList(registeredSubjects);
+				
+		} catch (SQLException e) 
+		{
+			System.out.println("Unable to get registered subjects");
+			System.out.println(e);
+		}
+		
+		return null;
 	}
 	
 	public boolean getIsAttendingLesson() {
