@@ -20,11 +20,13 @@ public class LearnerDb
 	private Statement stmt;
 	private PreparedStatement pstmt;
 	
+	final String deleteSubjectQuery = "DELETE FROM learner_subject WHERE learner_id=? and subject_id=?;";
 	final String getLearnerWithEmail = "SELECT * FROM learner WHERE email=?;";
 	final String getLearnerWithId = "SELECT * FROM learner WHERE id=?;";
 	final String checkIfLearnerExistQuery = "SELECT * FROM learner_exist(?)";
 	final String isSubjectREgistered = "SELECT * FROM is_sub_registered_learner(?, ?);";
 	final String isRegisteredThreeOrMoreSubjectsQuery = "SELECT * FROM has_three_more_subjects(?);"; 
+	final String addNewSubjectToLearnerQuery = "INSERT INTO learner_subject (learner_id, subject_id) VALUES (?, ?)"; 
 	
 	private boolean isAttendingLesson;
 	
@@ -210,5 +212,60 @@ public class LearnerDb
 		int subjectId = subjectKey.get(subject);
 		
 		return isRegisteredThreeOrMoreSubjects(learnerEmail) &&  isRegisteredSubject(learnerEmail, subject) && !getIsAttendingLesson();
+	}
+	
+	public void setAttendLesson(boolean attendingLesson)
+	{
+		this.isAttendingLesson = attendingLesson;
+	}
+	
+	public void deleteSubject(String learnerEmail, Subject subject)
+	{
+		int learnerId = getLearnerId(learnerEmail);
+		int subjectId = subjectKey.get(subject);
+		
+		try
+		{
+			pstmt = conn.prepareStatement(deleteSubjectQuery);
+			pstmt.setInt(1, learnerId);
+			pstmt.setInt(2, subjectId);
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+		}  catch (SQLException e) 
+		{
+			System.out.println("Unable to get learner ro subject");
+			System.out.println(e);
+		}
+	}
+	
+	public boolean registerNewSubject(String learnerEmail, Subject subject)
+	{
+		int learnerId = getLearnerId(learnerEmail);
+		int subjectId = subjectKey.get(subject);
+		
+		ResultSet rs = null;
+		
+		if(!isRegisteredSubject(learnerEmail, subject))
+		{
+			try
+			{
+				pstmt = conn.prepareStatement(addNewSubjectToLearnerQuery);
+				pstmt.setInt(1, learnerId);
+				pstmt.setInt(2, subjectId);
+				
+				pstmt.executeUpdate();
+				pstmt.close();
+				
+				return true;
+			}  catch (SQLException e) 
+			{
+				System.out.println("Could register new subject");
+				System.out.println(e);
+			}
+		}
+		
+		return false;		
 	}
 }

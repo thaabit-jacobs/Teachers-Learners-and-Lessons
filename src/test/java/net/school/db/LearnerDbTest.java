@@ -71,6 +71,17 @@ class LearnerDbTest {
 	
 	@Test
 	void shouldReturntFlaseForLearnerThatCanNotAttendLesson() {
-		assertTrue(db.canAttendLesson("thaabitj@gmail.com", Subject.ENGLISH));
+		assertFalse(db.canAttendLesson("thaabitj@gmail.com", Subject.LIFE_SCIENCES));
 	}
+	
+	@Test
+	void shouldREgisterNewSubjectIfSubjectNotRegistered() {
+		assertTrue(db.registerNewSubject("thaabitj@gmail.com", Subject.GEOGRAPHY));
+		db.deleteSubject("thaabitj@gmail.com", Subject.GEOGRAPHY);
+	} 
+	
+	@Test
+	void shouldREgisterNotNewSubjectIfSubjectIsRegistered() {
+		assertFalse(db.registerNewSubject("thaabitj@gmail.com", Subject.PHYSICAL_EDUCATIONS));
+	} 
 }
