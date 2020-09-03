@@ -98,4 +98,6 @@ public class Learner extends Consumer {
 		this.deductTokens(amount);
 		this.addNewLessonNotes(subject, AquiredType.BOUGHT);
 	}
+	
+	
 }

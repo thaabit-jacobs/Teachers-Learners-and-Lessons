@@ -6,11 +6,14 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
+import net.school.person.consumer.Learner;
 
 class LearnerDbTest {
 	
 	private final LearnerDb db = new LearnerDb();
+	private final Learner thaabit = new Learner("Thaabit", "Jacobs", "thaabitj@gmail.com");
 	
 	@Test
 	void shouldReturnLearnerIdForValidEmail() {
@@ -94,4 +97,15 @@ class LearnerDbTest {
 		assertEquals("AFRIKAANS", subjects.get(1).toString());
 		assertEquals("PHYSICAL_EDUCATIONS", subjects.get(2).toString());
 	} 
+	
+	@Test
+	void shouldReturnFalseForLearnerWhoDoesNotHaveLessonNotes() {
+		assertFalse(db.learnerHasLessonNotes(thaabit, Subject.AFRIKAANS));
+	}
+	
+	@Test
+	void shouldReturnTRueWhenAddingLessonNotes() {
+		assertTrue(db.addNewLessonNotes(thaabit, Subject.AFRIKAANS, AquiredType.ATTENDED_LESSON));
+		db.deleteLessonNotes(thaabit, Subject.AFRIKAANS);
+	}
 }

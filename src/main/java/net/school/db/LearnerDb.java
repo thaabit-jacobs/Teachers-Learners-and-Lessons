@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
+import net.school.person.consumer.Learner;
 
 public class LearnerDb
 {
@@ -34,6 +36,10 @@ public class LearnerDb
 	final String isRegisteredThreeOrMoreSubjectsQuery = "SELECT * FROM has_three_more_subjects(?);"; 
 	final String addNewSubjectToLearnerQuery = "INSERT INTO learner_subject (learner_id, subject_id) VALUES (?, ?)";
 	final String getLearnerRegisteredSubjects = "SELECT * FROM learner_subject WHERE learner_id=?";
+	final String addNewLessonNotesQuery = "INSERT INTO lesson_notes (learner_id, subject_id, aquired_id) values(?, ?,?);";
+	final String learnerHasLessonNotesQuery = "SELECT * FROM has_lesson_notes(?, ?);";
+	final String deleteLesonNotes = "DELETE FROM lesson_notes WHERE learner_id=? AND subject_id=?;";
+	
 	
 	private boolean isAttendingLesson;
 	
@@ -315,5 +321,92 @@ public class LearnerDb
 		}
 		
 		return false;		
+	}
+	
+	public boolean learnerHasLessonNotes(Learner learner, Subject subject)
+	{
+		int learnerId = getLearnerId(learner.getEmail());
+		int subjectId = subjectKey.get(subject);
+		boolean hasNotes = false;
+		
+		ResultSet rs = null;
+		
+		try
+		{
+			pstmt = conn.prepareStatement(learnerHasLessonNotesQuery);
+			pstmt.setInt(1, learnerId);
+			pstmt.setInt(2, subjectId);
+			
+			rs = pstmt.executeQuery();
+			
+			hasNotes = rs.getBoolean(1);
+			
+			rs.close();
+			pstmt.close();
+			
+			return hasNotes;
+		}  catch (SQLException e) 
+		{
+			System.out.println("Could not getlesson notes");
+			System.out.println(e);
+		}
+		
+		return hasNotes;
+	}
+	
+	public boolean addNewLessonNotes(Learner learner, Subject subject, AquiredType aquired)
+	{
+		int learnerId = getLearnerId(learner.getEmail());
+		int subjectId = subjectKey.get(subject);
+		int aquiredId = aquired.toString() == "BOUGHT" ? 1:2;
+		
+		if(learnerHasLessonNotes(learner, subject))
+			return false;
+		
+		try
+		{
+			pstmt = conn.prepareStatement(addNewLessonNotesQuery);
+			pstmt.setInt(1, 1);
+			pstmt.setInt(2, 2);
+			pstmt.setInt(3, 2);
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+			
+			return true;
+			
+		}  catch (SQLException e) 
+		{
+			System.out.println("Could not getlesson notes");
+			System.out.println(e);
+		}
+		
+		return false;
+	}
+	public boolean deleteLessonNotes(Learner learner, Subject subject)
+	{
+		int learnerId = getLearnerId(learner.getEmail());
+		int subjectId = subjectKey.get(subject);
+		
+		try
+		{
+			pstmt = conn.prepareStatement(deleteLesonNotes);
+			pstmt.setInt(1, learnerId);
+			pstmt.setInt(2, subjectId);
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+			
+			return true;
+			
+		}  catch (SQLException e) 
+		{
+			System.out.println("Could not delete lesson notes");
+			System.out.println(e);
+		}
+		
+		return false;
 	}
 }
