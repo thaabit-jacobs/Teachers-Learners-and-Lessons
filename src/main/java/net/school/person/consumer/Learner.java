@@ -2,28 +2,24 @@ package net.school.person.consumer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import net.school.curriculum.notes.AquiredType;
 import net.school.curriculum.subjects.Subject;
+import net.school.db.LearnerDb;
 
 public class Learner extends Consumer {
 	
+	private final LearnerDb db = new LearnerDb();
+	
 	private boolean isAttendingLesson;
-	
-	private ArrayList<Subject> registeredSubjects;
-	
-	private HashMap<Subject, AquiredType> notes;
 	
 	public Learner(String firstName, String lastName, String email) {
 		super(firstName, lastName, email);
-		
-		registeredSubjects = new ArrayList<>();
-		
-		notes = new HashMap<>();
 	}
 	
-	public HashMap<Subject, AquiredType> getNotes(){
-		return notes;
+	public Map<Subject, AquiredType> getNotes(){
+		return db.getNotes(this);
 	}
 	
 	public boolean getIsAttendingLesson() {
@@ -31,72 +27,48 @@ public class Learner extends Consumer {
 	}
 	
 	protected ArrayList<Subject> getRegisteredSubjects(){
-		return registeredSubjects;
+		return db.getRegisteredSubjects(getEmail());
 	}
 	
 	public boolean canAttendLesson(Subject subject) {
-		return isSubjectRegsitered(subject) && isRegisteredForThreeOrMoreSubjects() && !getIsAttendingLesson();
+		return db.canAttendLesson(getEmail(), subject);
 	}
 	
 	public boolean registerNewSubject(Subject subject) {
-		if(isSubjectRegsitered(subject))
-			return false;
-		
-		return getRegisteredSubjects().add(subject);
+		return db.registerNewSubject(getEmail(), subject);
 	}
 	
 	protected boolean isSubjectRegsitered(Subject subject){
-		for(Subject sub: getRegisteredSubjects())
-			if(sub == subject)
-				return true;
-		
-		return false;
+		return db.isRegisteredSubject(getEmail(), subject);
 	}
 	
 	protected boolean isRegisteredForThreeOrMoreSubjects() {
-		return getRegisteredSubjects().size() >= 3;
+		return db.isRegisteredThreeOrMoreSubjects(getEmail());
 	}
 	
 	public boolean learnerHasLessonNotes(Learner learner, Subject subject) {
-		return learner.getNotes().get(subject)  != null;
+		return db.learnerHasLessonNotes(learner, subject);
 	}
 	
 	public String askNotes(Learner learner, Subject subject) {
-		if(learnerHasLessonNotes(learner, subject)) {
-			if(this.isSubjectRegsitered(subject)) 
-				return performTransaction(2, subject);
-			else
-				return performTransaction(5, subject);
-		}
-	
-		return "Learner does not have lesson notes";
+		return db.askNotes(this, learner, subject);
 	}
 	
 	protected String performTransaction(int amount, Subject subject) {
-		if(this.hasEnoughTokens(amount)) {
-			updateLearnerTokensAndLessonNotes(amount, subject);
-			return "Bought lesson notes";
-		}
-		
-		return "Not enough tokens";
+		return db.performTransaction(this, subject, amount);
 	}
 	
 	public void setIsAttendLesson(boolean isAttending) {
 		isAttendingLesson = isAttending;
 	}
 	
-	public void addNewLessonNotes(Subject subject, AquiredType aquired) {
-		notes.put(subject, aquired);
-	}
-	
 	public void endOfDayStatus() {
-		notes.forEach((subject, type) -> System.out.println(subject + ":" + type));
-		System.out.println("Tokens :" + this.getTokens());
+		db.endOfDayStatus(this);
 	}
 	
 	protected void updateLearnerTokensAndLessonNotes(int amount, Subject subject) {
-		this.deductTokens(amount);
-		this.addNewLessonNotes(subject, AquiredType.BOUGHT);
+		db.deductTokens(this, amount);
+		db.addNewLessonNotes(this, subject, AquiredType.BOUGHT);
 	}
 	
 	
