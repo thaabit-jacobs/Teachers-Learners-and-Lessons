@@ -22,6 +22,7 @@ public class LearnerDb
 	
 	private final Map<Subject, Integer> subjectKey;
 	private final Map<Integer, Subject> subjectIdKey;
+	private HashMap<Subject, AquiredType> notes;
 
 	private Connection conn;
 	
@@ -39,7 +40,9 @@ public class LearnerDb
 	final String addNewLessonNotesQuery = "INSERT INTO lesson_notes (learner_id, subject_id, aquired_id) values(?, ?,?);";
 	final String learnerHasLessonNotesQuery = "SELECT * FROM has_lesson_notes(?, ?);";
 	final String deleteLesonNotes = "DELETE FROM lesson_notes WHERE learner_id=? AND subject_id=?;";
-	
+	final String getTokensQuery = "SELECT * FROM learner WHERE id=?;";
+	final String updateTokensQuery = "UPDATE learner SET tokens=? WHERE id=?; ";
+	final String getNotesQuery = "SELECT * FROM lesson_notes WHERE learner_id=?";
 	
 	private boolean isAttendingLesson;
 	
@@ -77,6 +80,142 @@ public class LearnerDb
 		subjectIdKey.put(7, Subject.PHYSICAL_EDUCATIONS);
 		
 		registeredSubjects = new ArrayList<>();
+		
+		notes = new HashMap<>();
+	}
+	
+	public Map getNotes(Learner learner)
+	{
+		ResultSet rs = null;
+		
+		int learnerId = getLearnerId(learner.getEmail());
+		
+		try
+		{
+			pstmt = conn.prepareStatement(getNotesQuery);
+			pstmt.setInt(1, learnerId);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next())
+				notes.put(subjectIdKey.get(rs.getInt("subject_id")), getType(rs.getInt("aquired_id")));
+			
+			rs.close();
+			pstmt.close();
+			
+		} catch (SQLException e) 
+		{
+			System.out.println("Unable to get notes");
+			System.out.println(e);
+		}
+		
+		return notes;
+	}
+	
+	public AquiredType getType(int aquiredId)
+	{
+		if(aquiredId == 1)
+			return AquiredType.BOUGHT;
+		
+		return AquiredType.ATTENDED_LESSON;
+	}
+	
+	public int getTokens(Learner learner)
+	{
+		int tokens = 0;
+		int learnerId =  getLearnerId(learner.getEmail());
+		
+		ResultSet rs = null;
+		
+		try
+		{
+			pstmt = conn.prepareStatement(getTokensQuery);
+			pstmt.setInt(1, learnerId);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			tokens = rs.getInt("tokens");
+			
+			return tokens;
+		} catch (SQLException e) 
+		{
+			System.out.println("Unable to get tokens");
+			System.out.println(e);
+		}
+		
+		return tokens;
+	}
+	
+	public boolean hasEnoughTokens(Learner learner, int amount)
+	{
+		return  getTokens(learner) >= amount;
+	}
+	
+	public void deductTokens(Learner learner, int amount)
+	{
+		int learnerId =  getLearnerId(learner.getEmail());
+		
+		try
+		{
+			pstmt = conn.prepareStatement(updateTokensQuery);
+			pstmt.setInt(1, getTokens(learner) - amount);
+			pstmt.setInt(2, learnerId);
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+		} catch (SQLException e) 
+		{
+			System.out.println("Unable to update tokens");
+			System.out.println(e);
+		}
+	}
+	
+	public void addTokens(Learner learner, int amount)
+	{
+		int learnerId =  getLearnerId(learner.getEmail());
+		
+		try
+		{
+			pstmt = conn.prepareStatement(updateTokensQuery);
+			pstmt.setInt(1, getTokens(learner) + amount);
+			pstmt.setInt(2, learnerId);
+			
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+		} catch (SQLException e) 
+		{
+			System.out.println("Unable to update tokens");
+			System.out.println(e);
+		}
+	}
+	
+	public String performTransaction(Learner learner, Subject subject, int amount)
+	{
+		if(hasEnoughTokens(learner, amount))
+		{
+			deductTokens(learner, amount);
+			addNewLessonNotes(learner, subject, AquiredType.BOUGHT);
+			return "Bought lesson notes";
+		}
+		
+		return "Not enough tokens";
+	}
+	
+	public String askNotes(Learner askingLearner, Learner givingLearner, Subject subject)
+	{		
+		if(this.learnerHasLessonNotes(askingLearner, subject))
+		{
+			if(this.isRegisteredSubject(askingLearner.getEmail(), subject))
+				return performTransaction(askingLearner, subject, 2);
+			else
+				return performTransaction(askingLearner, subject, 5);
+		}
+		
+		return "Learner does not have lesson notes";
 	}
 	
 	public ArrayList<Subject> getRegisteredSubjects(String learnerEmail)
@@ -408,5 +547,11 @@ public class LearnerDb
 		}
 		
 		return false;
+	}
+	
+	public void endOfDayStatus(Learner learner) 
+	{
+		notes.forEach((subject, type) -> System.out.println(subject + ":" + type));
+		System.out.println("Tokens :" + getTokens(learner));
 	}
 }
